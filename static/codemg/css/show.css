@@ -1,0 +1,62 @@
+.articel-save-container {
+    padding: 0 40px 40px 40px;
+}
+.markdown-comment-wrap {
+    margin-top: 20px;
+    position: relative;
+    width:100%;
+}
+.version-choice {
+    padding-bottom: 10px;
+}
+.markdown-comment-wrap.reedit-warp {
+    margin-top: 0;
+    height: 556px;
+    overflow: auto;
+}
+.markdown-show-wrap {
+    position: relative;
+    margin-left: 65px;
+}
+.markdown-comment-show {
+    position: relative;
+    outline: none;
+    padding-top: 5px;
+    padding-left: 0;
+    overflow: inherit;
+}
+.markdown-comment-show .comment-wrap {
+    position: relative;
+    cursor: pointer;
+}
+.markdown-comment-show .md-numbers-bar {
+    position: absolute;
+    left: -45px;
+    top: 0;
+    width: 45px;
+    height: 100%;
+    color: #999;
+    text-align: center;
+    /*z-index: 4;*/
+}
+.markdown-comment-show .md-comment-bar {
+    position: absolute;
+    left: -65px;
+    width: 20px;
+    cursor: pointer;
+    display: none;
+}
+.comment-wrap:hover .md-comment-bar{
+    display: block;
+}
+.markdown-comment-gutters {
+    position: absolute;
+    left: -40px;
+    top: 0;
+    /*border-right: 1px solid #ddd;*/
+    background-color: #f7f7f7;
+    white-space: nowrap;
+    width: 30px;
+    height: 100%;
+    /*z-index: 3;*/
+}

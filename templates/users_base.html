@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="" type="image/x-icon">
+
+  <!-- css -->
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/signin.css' %}">
+  <!-- 其他css -->
+  {% block other_css %}
+  {% endblock other_css %}
+
+  <!-- js -->
+<script src="{% static 'css_js/jquery-3.3.1.min.js' %}" ></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+
+</head>
+
+<body class="" style="background-color: #E0E0E0">
+<nav class="navbar navbar-inverse navbar-static-top bs-docs-nav">
+
+  <div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand" href="{% url "main:index" %}"><strong>可成长软件系统</strong></a>
+
+     </div>
+     <div class="container">
+
+              <div class="collapse navbar-collapse" id="myNavbar">
+
+               <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown">
+                      <a class="dropdown-toggle btn-green" data-toggle="dropdown" href="#"><span>欢迎用户:{{ username }}</span><span>  </span><span class="glyphicon glyphicon-user"></span>  <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a  href="{% url "users:usersindex" %}">个人中心</a></li>
+                      <li><a  href="{% url "users:logout" %}">退出登录</a></li>
+                    </ul>
+                  </li>
+
+                    <li class="dropdown"><a class="dropdown-toggle" href="{% url "users:logout" %}" ><span class="glyphicon glyphicon-log-in"></span>注销</a></li>
+               </ul>
+            </div>
+    </div>
+      <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url "main:index" %}">首页</a>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li class="shangchuan"><a href="{% url "codemg:code_create" %}">代码上传</a></li>
+                        <li class="chaxun"><a href="{{url}}/codemg/list/0/?page=1">代码库查询</a></li>
+                        <li><a href="{{url}}/blog/" >标注平台</a></li>
+                        <li class="geren"><a href="{% url "users:usersindex" %}" >个人中心</a></li>
+                    </ul>
+                </div>
+       </div>
+
+  </div>
+</nav>
+
+<!-- 页面主体 -->
+{% block web_content %}
+{% endblock web_content %}
+
+<!-- 其他js -->
+{% block other_js %}
+{% endblock other_js %}
+{% block script %}
+<script>
+</script>
+
+{% endblock %}
+</body>
+</html>

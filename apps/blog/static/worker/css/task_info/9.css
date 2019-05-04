@@ -1,0 +1,99 @@
+.task-flow-wrap {
+    margin-top: 20px;
+}
+.pro-top-bar .task-flow-wrap {
+    margin-top: 0;
+}
+.pro-top-control .task-flow-wrap {
+    margin-top: 0;
+}
+
+.task-flow-list {
+    width: 100%;
+    height: 62px;
+    margin-top: 15px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding-left: 31px;
+    box-sizing: border-box;
+}
+.project-detail-body .task-flow-list {
+    margin: 30px 0;
+}
+.task-flow-item {
+    display: inline-block;
+    position: relative;
+    font-size: 12px;
+    height: 100%;
+    line-height: 62px;
+    background: #ccc;
+    float: left;
+    color: #fff;
+    cursor: pointer;
+}
+.task-flow-item.last-item {
+    border-top-right-radius: 31px;
+    border-bottom-right-radius: 31px;
+}
+.task-flow-item.active-color,
+.task-flow-item.active-color .item-index-wrap {
+    background-color: #fd7861;
+}
+.task-flow-item.disable-click {
+    cursor: default;
+}
+.item-index-wrap {
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    border-radius: 34px;
+    background: #ccc;
+    border: 3px solid #fff;
+    left: -34px;
+    top: -3px;
+    font-size: 30px;
+    text-align: center;
+}
+.item-field-title {
+    display: inline-block;
+    font-size: 18px;
+    margin-left: 51px;
+}
+.item-field-status-text {
+    margin-left: 15px;
+    font-weight: 600;
+}
+.item-field-reward {
+    display: inline-block;
+    right: -30px;
+    color: #fe0;
+    padding: 0 10px;
+    font-weight: 600;
+}
+.item-field-reward-status {
+    font-weight: 600;
+    color: #fff;
+}
+
+@media (max-width: 800px) {
+    div.item-field-reward {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .item-field-title {
+        display: inline-block;
+        font-size: 16px;
+        margin-left: 45px;
+    }
+    .item-field-status-text {
+        margin-left: 5px;
+    }
+}
+
+@media (max-width: 500px) {
+    .task-flow-wrap {
+        display: none;
+    }
+}

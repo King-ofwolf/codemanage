@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}文章列表{% endblock %}
+
+{% block content %}
+
+  <h2>{{ article.title }}</h2>
+
+  <table class="table">
+    <tr>
+      <th>序号</th>
+      <th>版本</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+    {% for post in article_posts %}
+      <tr>
+        <th>{{ forloop.counter }}</th>
+        <td>{{ post.version }}</td>
+        <td>{% if post.status == 'publisher' %}已发布{% elif post.status == 'draft' %}草稿{% endif %}</td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+            {% if post.status == 'publisher' %}
+              <a class="btn btn-default btn-category-edit" href="{% url 'article:article_reedit' article.id post.id %}">重新编辑</a>
+            {% elif post.status == 'draft' %}
+              <a class="btn btn-default btn-category-edit" href="{% url 'article:article_edit' article.id post.id %}">编辑</a>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td class="text-center" colspan="3">还没有发布文章，太懒了。</td></tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

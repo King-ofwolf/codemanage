@@ -1,0 +1,73 @@
+{% extends 'users_base.html' %}
+{% load static %}
+{% block script %}
+<script>
+ $(".chaxun").addClass("active");
+</script>
+<script src="{% static 'codemg/js/list.js' %}"></script>
+{% endblock %}
+{% block web_content %}
+  <p>
+      <select  id="category1"  required="">
+        </select>
+  </p>
+
+  <table class="table">
+    <tr>
+      <th>标题</th>
+      <th>类别</th>
+      <th>大小</th>
+      <th>格式</th>
+      <th>修改日期</th>
+      <th>版本</th>
+      <th>作者</th>
+      <th>介绍</th>
+      <th>预览</th>
+      <th>点赞</th>
+      <th>下载</th>
+
+    </tr>
+    {% for code in codes %}
+      <tr>
+        <td>{{ code.title }}</td>
+        <td>{{ code.category }}</td>
+        <td>{{ code.size }}</td>
+        <td>{{ code.type }}</td>
+        <td>{{ code.created }}</td>
+        <td><select  class="version"  required="">
+                {% for codeversion in code.versions %}
+                    <option>{{ codeversion }}</option>
+                {% endfor %}
+        </select></td>
+        <td>{{ code.author }}</td>
+        <td><button  class="comments_body popover-hide btn btn-primary" title="介绍内容" data-container="body"  data-toggle="popover"  data-placement="left"  data-content="{{ code.intro }}">介绍内容</button></td>
+        <td onclick="yulan();"><img src="{% static 'image/yl.jpg' %}" alt="" width="25px" height="25px"></td>
+        <td onclick="updatestar();"><img src="{% static 'image/dz.jpg' %}" alt="" width="25px" height="25px"><span>{{ code.stars }}</span></td>
+        <td class="hidden">{{ code.id }}</td>
+        <td onclick="codedownload();"><img src="{% static 'image/xz.jpg' %}" alt="" width="25px" height="25px"></td>
+      </tr>
+    {% empty %}
+      <tr><td class="text-center" colspan="3">暂无代码。</td></tr>
+    {% endfor %}
+  </table>
+    <div class="container col-sm-2">
+        <div class="pagination">
+            <span class="step-links">
+                {% if codes.has_previous %}
+                    <a href="?page={{ codes.previous_page_number }}">前页</a>
+                {% endif %}
+
+                <span class="current">
+                    第{{ codes.number }}页/共{{ codes.paginator.num_pages }}页
+                </span>
+
+                {% if codes.has_next %}
+                    <a href="?page={{ codes.next_page_number }}">后页</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+
+{% endblock %}
+

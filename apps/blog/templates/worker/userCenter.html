@@ -1,0 +1,117 @@
+{% extends "worker/meBase.html" %}
+{% load static %}
+{% block title %}用户中心{% endblock %}
+{% block username %}{{ user.username }}{% endblock %}
+{% block extra_css %}
+
+    <link href="{% static 'worker/css/homepage/1.css'%}" rel="stylesheet"/>
+    <link href="{% static 'worker/css/homepage/2.css'%}" rel="stylesheet"/>
+    <link href="{% static 'worker/css/homepage/3.css'%}" rel="stylesheet"/>
+    <link href="{% static 'worker/css/homepage/4.css'%}" rel="stylesheet"/>
+{% endblock extra_css%}
+{% block extra_content %}
+
+<html lang="en">
+<head>
+    <script type="text/javascript" src="/static/js/jquery-1.9.0.min.js"></script>
+    <link href="/static/codemirror/lib/codemirror.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/codemirror/lib/codemirror.js"></script>
+    <script src="mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="/static/jqueryFileTree/jqueryFileTree.js"></script>
+    <link href="/static/jqueryFileTree/jqueryFileTree.css" rel="stylesheet">
+
+    <link href="/static/codemirror/theme/3024-night.css" rel="stylesheet">
+　  <link href="/static/codemirror/theme/erlang-dark.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/codemirror/theme/dracula.css"/>
+    <script src="/static/codemirror/mode/clike/clike.js"></script>
+    <script src="/static/codemirror/mode/shell/shell.js"></script>
+    <script src="/static/codemirror/mode/perl/perl.js"></script>
+    <script src="/static/codemirror/mode/python/python.js"></script>
+
+
+
+</head>
+<main class="container">
+
+
+
+<!--选择脚本编码代码--
+<div class="controls">
+     <input class="ck-code" type="radio" name="script_once_type" id="script_once_type1" checked> python
+     <input class="ck-code" type="radio" name="script_once_type" id="script_once_type2"> clike
+</div>
+
+<!-选择脚本风格代码--
+<div class="controls">
+    <select id='select'>
+         <option>default</option>
+         <option>3024-night</option>
+         <option selected>erlang-dark</option>
+    </select>
+</div>
+-->
+
+<!--textarea-->
+<textarea id="script_once_code">
+from .views import *
+from . import  views
+from django.urls import path
+</textarea>
+<textarea id="code2" class="hide">
+    #!/usr/bin/env python
+    # -*- coding: utf8 -*-
+</textarea>
+    <script>
+        myTextarea = document.getElementById("script_once_code");
+        var editor = CodeMirror.fromTextArea(myTextarea, {  // 标识到textarea
+            value : "http://www.cnblogs.com/oldphper",  // 文本域默认显示的文本
+            mode : "python",  // 模式
+            theme : "dracula",  // CSS样式选择
+            lineWrapping:true,
+            indentUnit : 2,  // 缩进单位，默认2
+            smartIndent : true,  // 是否智能缩进
+            tabSize : 4,  // Tab缩进，默认4
+            readOnly : false,  // 是否只读，默认false
+            showCursorWhenSelecting : true,
+            lineNumbers : true ,// 是否显示行号
+            matchBrackets: true,
+
+
+            //readOnly: true,
+            // .. 还有好多，翻译不完。需要的去看http://codemirror.net/doc/manual.html#config
+        });
+       /*选择脚本类型JS
+        var txt1=$("#script_once_code").val();
+        var txt2='';
+        $(".ck-code").click(function(){
+               var txt=editor.getValue(); //editor.getValue()获取textarea中的值
+               var lang=$(this).prop("id");
+               if(lang=="script_once_type1") {
+                       editor.setOption("mode","python");//editor.setOption()设置脚本类型
+                       editor.setValue(txt);// editor.setValue()设置textarea中的值
+                       editor.refresh();
+               }
+               else if(lang=="script_once_type2") {
+                       editor.setOption("mode","clike");
+                       editor.setValue(txt);
+                       editor.refresh();
+               }
+        });*/
+
+    </script>
+
+
+
+
+
+</section>
+
+
+</main>
+
+{% endblock extra_content%}
+
+
+
+
+

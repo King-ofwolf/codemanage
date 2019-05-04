@@ -1,0 +1,14 @@
+<div style="padding:10px;">
+  <div class="mb1">当前行：<span class="text-danger">{{ line }}</span></div>
+  {% for comment in article_comments %}
+    <div class="media" style="padding-left: 15px;">
+      <div class="media-body">
+        <div class="pull-right"></div>
+        <div class="">{{ comment.body|linebreaksbr }}</div>
+        <div class="text-muted">{{ comment.user }}&nbsp;&nbsp;{{ comment.created|date:"Y-m-d H:i:s" }}</div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="media text-muted"><div class="media-body">暂无批注</div></div>
+  {% endfor %}
+</div>

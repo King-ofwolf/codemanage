@@ -1,0 +1,634 @@
+{% extends "worker/meBase.html" %}
+{% block title %}BuaaMt{% endblock %}
+{% block username %}{{ user.username }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_01/1.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_01/2.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_01/3.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_01/4.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_01/button.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_01/checkbox.css" />
+    <style>.bdshare-slide-button-box{z-index:300}</style>
+{% endblock extra_css%}
+
+{% block extra_content %}
+<body class="list task-hall">
+
+  <div class="grid list-category-nav"></div>
+
+    <!--题目信息区域-->
+  <div class="grid grid-inverse">
+   <div class="main-wrap">
+    <div class="main mainContent">
+     <div class="list-container">
+      <li> <span class="mark-info-detail-title">题  号：</span> <span> <span id = 'subject_id'>1</span> </span> </li>
+      <li> <span class="mark-info-detail-title">本组题量：</span> <span> <span id = 'subject_count'>5</span> 题 </span> </li>
+      <li> <span class="mark-info-detail-title">截止时间：</span> <span> <span id = 'deadline'></span></span> </li>
+
+    </div>
+   </div>
+  </div>
+  </div>
+
+  <!--材料阅读区域-->
+  <div class="grid grid-inverse">
+   <div class="main-wrap">
+    <div class="main mainContent">
+     <div id = 'container' class="list-container">
+      <h2 style = "color:#55458c">请阅读材料&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id = 'reset_button' style = 'color:green; font-size:12px' onclick = 'reset()'>重置</span></h2>
+      <!--分割线-->
+      <div class="list-container-hd list-container-hd-border clearfix"></div>
+
+    </div>
+   </div>
+  </div>
+  </div>
+
+  <!--提问区域-->
+  <div class="grid grid-inverse">
+   <div class="main-wrap">
+    <div class="main mainContent">
+     <div class="list-container">
+      <h2 style = "color:#55458c">请提问(至少1道)</h2>
+      <!--分割线-->
+      <div class="list-container-hd list-container-hd-border clearfix"></div>
+      <div class="tab-switch tab-progress">
+       <table  id = 'qaTable' class="list-task">
+        <colgroup>
+         <col />
+         <col width="110px" />
+         <col width="130px" />
+         <col width="105px" />
+        </colgroup>
+
+         <tbody id = 'qaArea' style = "display:none">
+			<tr>
+				<td>
+					<p>
+                     <input class='tgl tgl-skewed' id='cb3' type='checkbox' onclick = 'editQ(this)'><label class='tgl-btn' data-tg-off='#问题#' data-tg-on='保存' for='cb3'></label><br><a class="list-task-title"  data-zbjlog="{obj:'main'}">中国的首都在哪里？</a>
+					</p><br>
+					<p>
+						<input class='tgl tgl-skewed' id='cb4' type='checkbox' onclick = 'editA(this)'><label class='tgl-btn' data-tg-off='#答案#' data-tg-on='保存' for='cb4'></label><br><a class="list-task-title"  data-zbjlog="{obj:'main'}">北京</a></span>
+					</p>
+				</td>
+				<td>
+					<a class="button orange medium" onclick = 'deleteIssue(this)'>删除</a>
+				</td>
+			</tr>
+		 </tbody>
+
+
+       </table>
+
+       <div class="list-footer">
+        <div class="list-search-box">
+        </div>
+        <div class="pagination">
+         <ul>
+          <li><a onclick="addNewIssue()">添加新问题</a></li>
+          <li><a onclick="addNewIssue()">+</a></li>
+         </ul>
+        </div>
+      </div>
+     </div>
+    </div>
+   </div>
+ </div>
+ </div>
+
+  <!--选题区域-->
+  <div class="grid grid-inverse">
+     <a  id = 'button_1' class= "button green medium" onclick = ''>下一题</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <a  id = 'button_2' class= "button green medium" onclick = ''>下一题</a>
+     <p id = 'error_message' style = "color : red"></p>
+  </div>
+
+ <script>
+
+    var subjects = {{ subjects|safe }};//题目列表
+    var deadline = {{ deadline|safe }};//截止日期
+    var user_id = {{ user_id|safe }};//user_id
+    var task_id = {{ task_id|safe }};//task_id
+    var subject_count = subjects.length;
+
+    var min_QA_count = 1;//最少的提问数目
+
+
+    for(var i = 0; i < subject_count; i++){
+        for(var item in subjects[i].content){
+            subjects[i].content = subjects[i].content[item];
+        }
+    }
+    console.log(subjects);
+
+    /*
+    * [
+    * {
+    *    id: 13
+    *    QAlist:     [
+    *         {'q':'辽宁是东北的吗', 'a':[15,17]},
+    *         {'q':'北航校长是谁', 'a': [45,48]}
+    *    ]
+    * }
+    * ]
+    * */
+    var _result = []
+
+    //QA DOM对象列表
+    var _qa_list = []
+
+    var cur_subject_index = 0;//题目索引
+    var cur_subject_id = -1;//题目id
+
+    document.getElementById('subject_count').innerHTML = subject_count;
+    document.getElementById('deadline').innerHTML = deadline;
+
+    var getWords = function (str, start, end) {
+        if(start == -1 || end == -1)return '???'
+        var s = '';
+        for(var i = start; i <= end; i++){
+            s += str[i]
+        }
+        return s;
+    }
+
+    var addNewIssue = function () {
+        //判断是否满足条件（是否有未编辑完成的问题和答案）
+        newIssue('???', [-1, -1])
+    }
+
+    var displayAllIssue = function () {
+        var cur_QA = _result[cur_subject_index];
+        for(var i = 0; i < cur_QA.QAlist.length; i++){
+            var q = cur_QA.QAlist[i].q;
+            var a = cur_QA.QAlist[i].a;
+
+            var qaTable = document.getElementById('qaTable');
+            qaArea_template = document.getElementById('qaArea');
+            var new_qa_area = qaArea_template.cloneNode(true)//DOM对象深度拷贝
+            new_qa_area.style.display = ''
+
+            //修改ID
+            var _a_input = new_qa_area.children[0].children[0].children[2].children[0]
+            var _a_label = new_qa_area.children[0].children[0].children[2].children[1]
+            var _q_input = new_qa_area.children[0].children[0].children[0].children[0]
+            var _q_label = new_qa_area.children[0].children[0].children[0].children[1]
+
+            _a_input.setAttribute("id",'_a_' + i);
+            _a_label.setAttribute("for",'_a_' + i);
+            _q_input.setAttribute("id",'_q_' + i);
+            _q_label.setAttribute("for",'_q_' + i);
+
+            new_qa_area.children[0].children[0].children[0].children[3].innerHTML = q;//Q
+            new_qa_area.children[0].children[0].children[2].children[3].innerHTML = getWords(subjects[cur_subject_index].content, a[0], a[1]);//, a[0], a[1])//A
+
+            qaTable.appendChild(new_qa_area)
+            _qa_list.push(new_qa_area)
+        }
+    }
+
+    //添加新的问题
+    var newIssue = function (q, a) {
+
+        var cur_id = _qa_list.length
+
+        var qaTable = document.getElementById('qaTable');
+        qaArea_template = document.getElementById('qaArea');
+        var new_qa_area = qaArea_template.cloneNode(true)//DOM对象深度拷贝
+        new_qa_area.style.display = ''
+
+        //修改ID
+        var _a_input = new_qa_area.children[0].children[0].children[2].children[0]
+        var _a_label = new_qa_area.children[0].children[0].children[2].children[1]
+        var _q_input = new_qa_area.children[0].children[0].children[0].children[0]
+        var _q_label = new_qa_area.children[0].children[0].children[0].children[1]
+
+        _a_input.setAttribute("id",'_a_' + cur_id);
+        _a_label.setAttribute("for",'_a_' + cur_id);
+        _q_input.setAttribute("id",'_q_' + cur_id);
+        _q_label.setAttribute("for",'_q_' + cur_id);
+
+        new_qa_area.children[0].children[0].children[0].children[3].innerHTML = q;//Q
+        new_qa_area.children[0].children[0].children[2].children[3].innerHTML = getWords(subjects[cur_subject_index].content, a[0], a[1]);//, a[0], a[1])//A
+
+        qaTable.appendChild(new_qa_area)
+        _qa_list.push(new_qa_area)
+
+        var cur_result = _result[cur_subject_index];
+        var new_obj = {}
+        new_obj.q = q
+        new_obj.a = a
+
+        cur_result.QAlist.push(new_obj)
+
+    }
+
+    var modifyId = function (node) {
+       for(var i = 0; i < _qa_list.length; i++)
+       {
+           qa_area = _qa_list[i]
+
+           var _a_input = qa_area.children[0].children[0].children[2].children[0]
+           var _a_label = qa_area.children[0].children[0].children[2].children[1]
+           var _q_input = qa_area.children[0].children[0].children[0].children[0]
+           var _q_label = qa_area.children[0].children[0].children[0].children[1]
+
+           _a_input.setAttribute("id",'_a_' + i);
+           _a_label.setAttribute("for",'_a_' + i);
+           _q_input.setAttribute("id",'_q_' + i);
+           _q_label.setAttribute("for",'_q_' + i);
+       }
+    }
+
+    //删除问题
+    var deleteIssue = function (that) {
+
+        var parent = that.parentNode.parentNode.parentNode;
+
+        var _id = parent.children[0].children[0].children[2].children[0].id
+        var _index = parseInt(_id.substring(3, 100))
+
+        _qa_list.splice(_index, 1)
+        _result[cur_subject_index].QAlist.splice(_index, 1)
+
+        modifyId()
+
+       for(var i = 0; i < _qa_list.length; i++)
+       {
+          console.log(_qa_list[i])
+       }
+
+       parent.remove()
+    }
+
+    //检查当前是否能够进入下一题
+    //1.至少3道题
+    //2.不能有未完成的题目
+    //3.不能有未保存的题目
+    checkIfCanNext = function () {
+        if(_qa_list.length < min_QA_count){
+            return 2
+        }
+        else{
+
+            for(var i = 0; i < _result[cur_subject_index].QAlist.length; i++){
+                var q = _result[cur_subject_index].QAlist[i].q;
+                var a = _result[cur_subject_index].QAlist[i].a;
+                if(q == '???' || a == [-1, -1]){
+                    return 3
+                }
+            }
+            for(var i = 0; i < _qa_list.length; i++){
+                var _q_checked = _qa_list[i].children[0].children[0].children[2].children[0];
+                var _a_checked = _qa_list[i].children[0].children[0].children[0].children[0];
+                if(_q_checked.checked)return 4;
+                if(_a_checked.checked)return 4;
+            }
+        }
+        return 1;
+    }
+
+    //检查当前是否能够新开一题
+    //1.不能有未完成的题目
+    //2.不能有未保存的题目
+    checkIfCanNew = function () {
+
+    }
+
+    var toSubject = function(index){
+
+        console.log('当前题号：' + index)
+        for(var i = 0; i < _qa_list.length; i++){
+            _qa_list[i].remove()
+        }
+        _qa_list = []
+
+        var cur_subject = subjects[index];
+        cur_subject_index = index;
+        cur_subject_id = cur_subject.id;
+
+        document.getElementById('subject_id').innerHTML = index + 1;
+
+        //change the button
+        button_1 = document.getElementById('button_1');
+        button_2 = document.getElementById('button_2');
+
+		//2018-5-8
+        nb = new ParagraphDiv();
+		nb._content = cur_subject.content
+		var _edit_div = nb.fill()
+        nb.clickValid = false;
+		document.getElementById('container').appendChild(_edit_div)
+
+        document.getElementById("reset_button").style.display = 'none'
+
+        document.getElementById('error_message').innerHTML = ''
+
+        //题目选择按钮
+        if(index == 0){
+            button_2.style.display = 'none';
+            button_1.innerHTML = '下一题';
+            button_2.style.color = 'black';
+            button_1.onclick = function(){
+                if(checkIfCanNext() == 1){
+                    toSubject(index + 1);
+                }
+                else{
+                    switch(checkIfCanNext()){
+                        case 2: document.getElementById('error_message').innerHTML = '请您至少提出' + min_QA_count + '个问题';break;
+                        case 3: document.getElementById('error_message').innerHTML = '请您把所有问题都回答完毕';break;
+                        case 4: document.getElementById('error_message').innerHTML = '请您把所有问题都保存完毕';break;
+                    }
+                }
+            }
+        }
+        else if(index == subject_count - 1)//the last subject
+        {
+            button_2.style.display = '';
+            button_1.innerHTML = '上一题';
+            button_2.innerHTML = '提交';
+            button_2.style.color = 'red';
+            button_1.onclick = function(){
+                toSubject(index - 1);
+            }
+            button_2.onclick = function(){
+                 if(checkIfCanNext() == 1){
+                    post('/worker_submit_result_01', _result);
+                }
+                else{
+                    switch(checkIfCanNext()){
+                        case 2: document.getElementById('error_message').innerHTML = '请您至少提出' + min_QA_count + '个问题';break;
+                        case 3: document.getElementById('error_message').innerHTML = '请您把所有问题都回答完毕';break;
+                        case 4: document.getElementById('error_message').innerHTML = '请您把所有问题都保存完毕';break;
+                    }
+                }
+            }
+        }
+        else{
+            button_2.style.display = '';
+            button_1.innerHTML = '上一题';
+            button_2.innerHTML = '下一题';
+            button_2.style.color = 'black';
+            button_1.onclick = function(){
+                toSubject(index - 1);
+            }
+            button_2.onclick = function(){
+                if(checkIfCanNext() == 1){
+                    toSubject(index + 1);
+                }
+                else{
+                    switch(checkIfCanNext()){
+                        case 2: document.getElementById('error_message').innerHTML = '请您至少提出' + min_QA_count + '个问题';break;
+                        case 3: document.getElementById('error_message').innerHTML = '请您把所有问题都回答完毕';break;
+                        case 4: document.getElementById('error_message').innerHTML = '请您把所有问题都保存完毕';break;
+                    }
+                }
+            }
+        }
+
+        if(_result[cur_subject_index] == undefined){
+           var cur_result = {}
+           cur_result.id = subjects[cur_subject_index].id
+           cur_result.QAlist = []
+           _result[cur_subject_index] = cur_result
+        }
+        //展示当前题目已经做的题目
+        displayAllIssue()
+    }
+	//////////////////////////////////////////////////////////////////////////////////////////
+	//段落Div
+	function ParagraphDiv(){
+
+		this.width = '1060px';//段落宽度（单位是像素）
+		this._content = '';//段落内容
+		this._sub_span = []; //每个字对应一个span
+
+		this._father_div = document.createElement("div");
+		this._father_div.style.width  = this.width;
+
+		this._father_div.style.position = 'relative';
+		this._father_div.style.top  = '20px';
+		this._father_div.style.top  = '20px';
+
+		this._start_pos = -1;//当前选词的起始位置
+        this._end_pos = -1;//当前选词的结束位置
+
+        this.selected_word = ''
+
+		this._father_div.onmousemove = function(){//鼠标移动到文字文字区域改变鼠标样式
+			this.style.cursor = "hand";
+		}
+
+		//删除相同id的div
+		var ppdiv = document.getElementById("father_div");
+		if(ppdiv){
+			ppdiv.parentNode.removeChild(ppdiv);
+		}
+		this._father_div.id = 'father_div'
+
+        //document.getElementById("reset_button").style.display = 'none'
+
+		this.fill = function(){
+
+		    var that = this
+			for(var i = 0; i < this._content.length; i++){
+				var _char = this._content[i];
+				var _char_span = document.createElement("span");
+				_char_span.id = i;
+				_char_span.innerHTML = '<font size = "5", color = \'black\' onselectstart = \'return false\'>' + _char + '</font>';
+				_char_span.style = 'line-height:30px ';
+				_char_span.onclick = function(){
+				    if(that.clickValid == false)return;
+                    if(that._start_pos == -1 && that._end_pos == -1){
+				        //第一次点击
+                        that._start_pos = that._end_pos = parseInt(this.getAttribute("id"));
+                        that.selectAll(that._start_pos, that._end_pos);
+                    }
+                    else{
+                        if(that._start_pos != that._end_pos){
+				            return;//已经选完一个答案(答案字数大于1)。若要重新选择必须点击重置按钮重新选择
+                        }
+                        else{
+                            cur_id = parseInt(this.getAttribute("id"));
+                             if(cur_id != that._start_pos){
+                                 that._end_pos = cur_id
+                                 that.selectAll(that._start_pos, that._end_pos);
+                             }
+                        }
+                    }
+				}
+
+				this._father_div.appendChild(_char_span);
+				this._sub_span[i] = _char_span
+			}
+
+			var placeholder = document.createElement('p')
+			placeholder.innerHTML = '<br>'
+			this._father_div.appendChild(placeholder);
+
+			return this._father_div
+		}
+
+		this.selectAll = function(start, end){
+
+		    if(start == -1 || end == -1)return;
+		    if(start > end){
+		        var temp = start;
+		        start = end;
+		        end = temp
+            }
+			for(var i = start; i <= end; i++){
+				var span = this._sub_span[i]
+				var select_char = span.children[0].innerHTML;
+				span.innerHTML = '<font size = "5", color = \'red\' onselectstart = \'return false\'>' + select_char + '</font>';
+			}
+
+			this.selected_word = getWords(this._content, start, end)
+            modifyAnswer(this.selected_word);
+		}
+
+		//文字点击有效控制
+		this.clickValid = false;
+	}
+
+	//清空原答案，重选新答案
+    reset = function() {
+		for(var i = 0; i < nb._content.length; i++){
+				var span = nb._sub_span[i]
+				var select_char = span.children[0].innerHTML;
+				span.innerHTML = '<font size = "5", color = \'black\' onselectstart = \'return false\'>' + select_char + '</font>';
+			}
+        nb._start_pos = -1;
+        nb._end_pos = -1;
+        modifyAnswer('???');
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+    editQ = function (that) {
+
+	    //确认该问题是第几个问题
+        var index = parseInt(that.id.substring(3, 100));
+	    if(that.checked){//进入编辑状态
+            var _Q_dom = that.parentNode.children[3];
+            _Q_dom.style.display = 'none'
+
+            var _t = _Q_dom.innerHTML
+
+            var edit = document.createElement('input')
+            edit.type = 'text';
+            edit.style.width = '900px';
+            edit.style.height = '26px';
+            edit.value = _t;
+            edit.id = 'temp_edit_q_' + index;
+            edit.required = 'required';
+            that.parentNode.appendChild(edit)
+        }
+        else{//保存该问题
+           var edit = document.getElementById('temp_edit_q_' + index)
+           var new_q_str = edit.value
+           edit.remove()
+           that.parentNode.children[3].style.display = ''
+
+            //原答案
+            var old_q = that.parentNode.children[3].innerHTML
+
+            //展示保存新的答案
+            if(new_q_str != ''){
+               that.parentNode.children[3].innerHTML = new_q_str
+
+                //保存新的答案
+               var cur_result = _result[cur_subject_index];
+               cur_result.QAlist[index].q = new_q_str
+            }
+        }
+    }
+
+    this.edited_answer_index = -1;
+    editA = function (that) {
+	    //确认该问题是第几个问题
+        var index = parseInt(that.id.substring(3, 100));
+        edited_answer_index = index;
+        if(that.checked){//进入编辑状态 TODO 复选框互斥
+            for(var i = 0; i < _qa_list.length; i++){
+                if(i != index){
+                    var answer = _qa_list[i].children[0].children[0].children[2].children[0];
+                    answer.checked = false
+                }
+            }
+
+            //刷新材料阅读区
+            var cur_result = _result[cur_subject_index];
+
+            nb._start_pos = cur_result.QAlist[index].a[0];
+            nb._end_pos = cur_result.QAlist[index].a[1];
+            nb.selectAll(nb._start_pos, nb._end_pos)
+            document.getElementById("reset_button").style.display = ''
+            nb.clickValid = true;
+
+            var cur_result = _result[cur_subject_index];
+            modifyAnswer(getWords(nb._content, cur_result.QAlist[index].a[0], cur_result.QAlist[index].a[1]));
+        }
+        else{//保存该答案
+
+            if(nb._start_pos > nb._end_pos){
+                var temp = nb._start_pos;
+                nb._start_pos = nb._end_pos;
+                nb._end_pos = temp;
+            }
+
+            var cur_result = _result[cur_subject_index];
+            cur_result.QAlist[index].a = [nb._start_pos, nb._end_pos]
+            reset()
+            document.getElementById("reset_button").style.display = 'none'
+            nb.clickValid = false;
+            modifyAnswer(getWords(nb._content, cur_result.QAlist[index].a[0], cur_result.QAlist[index].a[1]));
+
+        }
+    }
+
+    modifyAnswer = function (answer) {
+        console.log('【答案】' + answer)
+        var _A_dom =  _qa_list[edited_answer_index].children[0].children[0].children[2].children[3]
+        _A_dom.innerHTML = answer;
+    }
+
+    function post(URL, PARAMS) {
+
+        console.log('---------------------------')
+        console.log(_result)
+        console.log('---------------------------')
+        var temp = document.createElement("form");
+        temp.action = URL;
+        temp.method = "post";
+        temp.style.display = "none";
+
+        //标注结果
+        var answer_list = JSON.stringify(_result)
+        var opt1 = document.createElement("textarea");
+        opt1.name = 'answer_list';
+        opt1.value = answer_list;
+        temp.appendChild(opt1);
+
+        //user_id
+        var opt2 = document.createElement("textarea");
+        opt2.name = 'user_id';
+        opt2.value = user_id;
+        temp.appendChild(opt2);
+
+        //task_id
+        var opt3 = document.createElement("textarea");
+        opt3.name = 'task_id';
+        opt3.value = task_id;
+        temp.appendChild(opt3);
+
+        document.body.appendChild(temp);
+        temp.submit();
+        return temp;
+    }
+
+    toSubject(cur_subject_index);
+
+  </script>
+ </body>
+{% endblock extra_content%}

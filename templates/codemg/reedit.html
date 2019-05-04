@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}文章重新编辑{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'libs/editor-md/css/editormd.min.css' %}">
+<link rel="stylesheet" href="{% static 'article/css/show.css' %}">
+{% endblock %}
+
+{% block full_content %}
+<div class="articel-save-container">
+
+  <form class="form" id="form-article-post" action="{% url 'article:article_reedit' article.id article_post.id %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <h2>文章重新编辑</h2>
+      <hr>
+    </div>
+
+    <div class="form-group">
+      <label for="id_title">标题</label>
+      <input type="text" id="id_title" class="form-control" placeholder="标题" name="title" value="{{ article.title }}">
+    </div>
+
+    <div class="form-group">
+      <label for="id_intro">简介</label>
+      <textarea name="intro" id="id_intro" class="form-control minimum" placeholder="简介">{{ article.title }}</textarea> 
+    </div>
+
+    <div class="form-group">
+      <label for="id_body">内容</label>
+      <div class="editormd-warp row">
+        <div class="col-sm-4">
+
+          <div class="version-choice">
+            <select class="form-control change-version" data-url="{% url 'article:article_post_body' article.id %}">
+              {% for post in pub_article_posts %}
+                <option {% if post.id == article_post.id %}selected="selected"{% endif %} value="{{ post.id }}">{{ post.version }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="markdown-comment-wrap reedit-warp">
+            <div class="markdown-show-wrap">
+              <div class="markdown-comment-gutters"></div>
+              <div id='editormd-view' class="markdown-show markdown-comment-show"></div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-sm-8">
+
+          <div id="editormd">
+            <textarea class="form-control hide" id="id_body" name="body">{{ article_post.body }}</textarea>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <hr>
+      <a class="btn btn-default btn-article-save" href="javascript:;" data-target="#form-article-post" data-status="draft">保存</a>
+      <a class="btn btn-success btn-article-save" href="javascript:;" data-target="#form-article-post" data-status="publisher">保存并发布</a>
+    </div>
+
+  </form>
+
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "libs/editor-md/lib/marked.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/prettify.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/raphael.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/underscore.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/sequence-diagram.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/flowchart.min.js" %}''></script>
+<script src='{% static "libs/editor-md/lib/jquery.flowchart.min.js" %}'></script>
+<script src="{% static 'libs/editor-md/editormd.min.js' %}"></script>
+<script src="{% static 'article/js/reedit.js' %}"></script>
+{% endblock %}

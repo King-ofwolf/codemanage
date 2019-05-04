@@ -1,0 +1,37 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>BuaaMT Worker 注册</title>
+  <link rel="stylesheet" href="static/requester/css/login_requester.css">
+</head>
+<body>
+
+  <section class="container">
+    <div class="login">
+      <h1>注册你的 Worker 账号</h1>
+      <form method="post" action="{% url 'reg_worker' %}">
+        {% csrf_token %}
+	    {% if error_message %}
+          <ul class="errorlist">
+            <li>{{ error_message }}</li>
+          </ul>
+        {% endif %}
+        <p><input type="text" name="username" value="" placeholder="用户名" required></p>
+        <p><input type="text" name="email" value="" placeholder="邮箱" required></p>
+        <p><input type="password" name="password" value="" placeholder="密码(至少6位)" required></p>
+        <p><input type="password" name="password_confirm" value="" placeholder="确认密码" required></p>
+        <p class="submit"><input type="submit" name="commit" value="注册"></p>
+      </form>
+    </div>
+
+    <div class="login-help">
+      <p>已经有账户? <a href="{% url 'login_worker' %}">点击登录</a></p>
+    </div>
+  </section>
+<div style="text-align:center;">
+</div>
+</body>
+</html>
+
+
+

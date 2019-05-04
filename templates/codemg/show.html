@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}文章详情{% endblock %}
+{% block style %}
+<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'libs/editor-md/css/editormd.min.css' %}">
+<link rel="stylesheet" href="{% static 'article/css/show.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <h1 class="text-left">{{ article.title }}</h1>
+  <p class="text-left">{{ article.author }}</p>
+  <p class="text-left">{{ article.created }}</p>
+
+  <form class="form-inline">
+    <div class="form-group">
+      <label for="exampleInputName2">版本：</label>
+      <select class="form-control change-version" data-url="{% url 'article:article_post_body' article.id %}">
+        {% for post in pub_article_posts %}
+          <option value="{{ post.id }}">{{ post.version }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
+
+  <div class="markdown-comment-wrap">
+    <div class="markdown-show-wrap">
+      <div id='editormd-view' class="markdown-show markdown-comment-show"></div>
+      <div class="markdown-comment-gutters"></div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+<script src='{% static "libs/editor-md/lib/marked.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/prettify.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/raphael.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/underscore.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/sequence-diagram.min.js" %}'></script>
+<script src='{% static "libs/editor-md/lib/flowchart.min.js" %}''></script>
+<script src='{% static "libs/editor-md/lib/jquery.flowchart.min.js" %}'></script>
+<script src="{% static 'libs/editor-md/editormd.min.js' %}"></script>
+<script src="{% static 'article/js/show.js' %}"></script>
+{% endblock %}

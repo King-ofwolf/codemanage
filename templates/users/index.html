@@ -1,0 +1,134 @@
+{% extends 'users_base.html' %}
+{% load static %}
+{% block script %}
+<script>
+ $(".geren").addClass("active");
+function delcode() {
+    aa = $(event.target);
+    $.ajax({
+        timeout: 1000,
+        async: false,
+        type: "GET",
+        json: {"id": "id"},
+        url: getRootPath() + "/codemg/delete/"+$(event.target).parent().prev().text(),
+        dataType: "json",
+        success: function (data) {
+            aa.parent().parent().remove();
+        }
+    })
+}
+function getRootPath(){
+    //获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+    var curWwwPath=window.document.location.href;
+    //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+    var pathName=window.document.location.pathname;
+    var pos=curWwwPath.indexOf(pathName);
+    //获取主机地址，如： http://localhost:8083
+    var localhostPaht=curWwwPath.substring(0,pos);
+    //console.log(localhostPaht)
+    //获取带"/"的项目名，如：/uimcardprj
+    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    return(localhostPaht);
+}
+function userinfo(){
+    $("#userinfo").removeClass("hidden");
+    $("#mycode").addClass("hidden");
+    }
+
+function mycodelist(){
+    $("#userinfo").addClass("hidden");
+    $("#mycode").removeClass("hidden");
+    }
+
+
+</script>
+{% endblock %}
+{% block web_content %}
+  <div class="col">
+    <!-- 中间栏 -->
+    <div class="padder">
+      <div>
+        <div class="panel panel-default">
+
+          <div class="panel-body" style="height: 750px;">
+
+            <div id="editable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+              <div class="row">
+                <div class="col-lg-2" style="border-left: 2px solid #003366; margin-bottom: 10px; margin-top: 10px; height: 25px;font-size: 16px;">
+                    <p onclick="userinfo();">个人信息</p><br>
+                    <p onclick="mycodelist();">我的上传</p>
+                </div>
+                <div class="col-lg-6" style="margin-top: 10px;margin-left: 100px;">
+                        <div class="flex-center hidden" id="userinfo">
+                             <div class="container">
+                                <div class="flex-center">
+                                    <div class="unit-1-2 unit-1-on-mobile">
+                                        <form class="form" action="{% url 'users:edit' %}" method="post">
+                                            {% csrf_token %}
+                                             <label for="id_username">用户名:</label><br>
+                                                <input type="text" name="username" maxlength="150" autofocus required id="id_username" value="{{ userinfo.username }}" disabled="true"><br><br>
+
+                                                <label for="id_email">电子邮件地址:</label><br>
+                                                <input type="email" name="email" maxlength="254" id="id_email" value="{{ userinfo.email }}"><br><br>
+
+                                                <label for="id_password1">修改密码:</label><br>
+                                                <input type="password" name="password1" required id="id_password1"><br><br>
+
+                                            <button type="submit" class="btn btn-primary ">修改</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div id="mycode" >
+                    <table class="table" >
+                        <tr>
+                          <th>标题</th>
+                          <th>类别</th>
+                          <th>上传时间</th>
+                          <th>审核状态</th>
+                          <th>重新上传</th>
+                           <th>删除</th>
+                        </tr>
+                        {% for code in mycodeslist %}
+                          <tr>
+                            <td>{{ code.title }}</td>
+                            <td>{{ code.category }}</td>
+                            <td>{{ code.created }}</td>
+                            <td>{% if code.status == '0' %}正在审核{% elif code.status == '1' %}通过{% else %}未通过{% endif %}</td>
+                            <td><a href="{% url "codemg:code_create" %}"><button  class="comments_body popover-hide btn btn-primary" >重新上传</button></a></td>
+                            <td class="hidden">{{ code.id }}</td>
+                            <td><button onclick="delcode();" class="comments_body popover-hide btn btn-primary" >删除</button></td>
+                          </tr>
+                        {% empty %}
+                          <tr><td class="text-center" colspan="3">暂无代码。</td></tr>
+                        {% endfor %}
+                      </table>
+                  <div class="container col-sm-4">
+                       <div class="pagination">
+                        <span class="step-links">
+                            {% if mycodeslist.has_previous %}
+                                <a href="?page={{ mycodeslist.previous_page_number }}">前页</a>
+                            {% endif %}
+                            <span class="current">
+                                第{{ mycodeslist.number }}页/共{{ mycodeslist.paginator.num_pages }}页
+                            </span>
+                            {% if mycodeslist.has_next %}
+                                <a href="?page={{ mycodeslist.next_page_number }}">后页</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                  </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="" type="image/x-icon">
+
+  <!-- css -->
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/css/signin.css' %}">
+  <!-- 其他css -->
+  {% block other_css %}
+
+  {% endblock other_css %}
+
+  <!-- js -->
+<script src="{% static 'css_js/jquery-3.3.1.min.js' %}" ></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'codemg/js/create.js' %}"></script>
+<script src="{% static 'codemg/js/list.js' %}"></script>
+</head>
+
+<body class="" style="background-color: #E0E0E0">
+
+
+<!-- 页面主体 -->
+{% block web_content %}
+{% endblock web_content %}
+
+<!-- 其他js -->
+{% block other_js %}
+{% endblock other_js %}
+{% block script %}
+<script>
+
+function updatestar(){
+           aa = $(event.target);
+           $.ajax({
+            timeout:1000,
+            async: false,
+            type: "GET",
+            json:{"id":"id"},
+            url: getRootPath()+"/codemg/update/"+$(event.target).parent().next().text(),
+            dataType: "json",
+            success: function (data) {
+                aa.next().text(data.stars);
+            }
+    })
+}
+
+function codedownload(){
+    window.location.href = getRootPath()+"/codemg/download/"+$(event.target).parent().prev().text();
+}
+
+function delcode() {
+    aa = $(event.target);
+    $.ajax({
+        timeout: 1000,
+        async: false,
+        type: "GET",
+        json: {"id": "id"},
+        url: getRootPath() + "/codemg/delete/"+$(event.target).parent().prev().text(),
+        dataType: "json",
+        success: function (data) {
+            aa.parent().parent().remove();
+        }
+    })
+}
+
+$(function () { $('.popover-hide').popover();});
+$(function () { $('.popover-hide').on('hide.bs.popover', function () {    event.stopPropagation();})});
+$(function () { $('.popover-hide').on('show.bs.popover', function () {    event.stopPropagation();})});
+</script>
+
+{% endblock %}
+</body>
+</html>

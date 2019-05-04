@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}文章列表{% endblock %}
+
+{% block content %}
+
+  <div class="">
+    <a href="{% url 'article:article_create' %}" class="btn btn-sm btn-success pull-right">添加文章</a>
+    <h2>文章列表</h2>
+  </div>
+
+  <table class="table">
+    <tr>
+      <th>序号</th>
+      <th width="50%">标题</th>
+      <th>操作</th>
+    </tr>
+    {% for article in articles %}
+      <tr>
+        <th>{{ forloop.counter }}</th>
+        {% if article.status == 'publisher' %}
+          <td><a href="{% url 'article:article_comment' article.id %}">{{ article.title }}</a></td>
+        {% else %}
+          <td>{{ article.title }}</td>
+        {% endif %}
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-default btn-category-edit" href="{% url 'article:article_post_list' article.id %}">详情</a>
+          </div>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td class="text-center" colspan="3">还没有发布文章，太懒了。</td></tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
