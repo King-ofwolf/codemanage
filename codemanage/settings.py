@@ -25,6 +25,7 @@ SECRET_KEY = '6dujujeed5ix+!0q3q!qa#rk&tb^4+bad0t$xyq=y+d)#iuvly'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#ALLOWED_HOSTS = ['127.0.0.1']
 #STATIC_ROOT=os.path.join(BASE_DIR,'static/')
 ALLOWED_HOSTS = ['39.96.66.226']
 
@@ -85,6 +86,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       #'ENGINE': 'django.db.backends.mysql',
+       # 'NAME': 'codemanage',  # 数据库名
+        #'USER': 'root',  # 用户名
+        #'PASSWORD': '123',  # 密码
+        #'HOST': '127.0.0.1',
+       # 'PORT': '3306',
+
     }
 }
 
@@ -118,7 +126,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
