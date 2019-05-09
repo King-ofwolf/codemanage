@@ -1,0 +1,99 @@
+{% extends "worker/meBase.html" %}
+{% block title %}我的任务|我的BuaaMt工作台{% endblock %}
+{% block username %}{{ user.username }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/my_task/1.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/my_task/2.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/my_task/3.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/my_task/4.css" />
+    <style>.bdshare-slide-button-box{z-index:300}</style>
+{% endblock extra_css%}
+{% block extra_content %}
+    <body class="list task-hall">
+  <div class="grid list-category-nav">
+  </div>
+  <div class="grid grid-inverse">
+   <div class="main-wrap">
+    <div class="main mainContent">
+     <div class="list-container">
+      <div class="list-container-hd clearfix hide">
+       <h2 class="fl yahei"> 所有需求<span class="list-number">(4150)</span> </h2>
+      </div>
+      <div class="list-filter filter-along">
+       <dl>
+        <dt>
+         任务类型
+        </dt>
+        <dd>
+         <a id = "11" href="" class="selected" rel="nofollow">全部</a>
+         <a id = "12" href="" rel="nofollow">文本</a>
+         <a id = "13" href="" rel="nofollow">图片</a>
+         <a id = "14" href="" rel="nofollow">视频</a>
+         <a id = "15" href="" rel="nofollow">其他</a>
+        </dd>
+       </dl>
+       <dl>
+        <dt>
+		状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态
+        </dt>
+        <dd>
+         <a data-linkid="10002782" href="" class="selected" rel="nofollow">全部</a>
+         <a data-linkid="10002782" href="" rel="nofollow">进行中</a>
+         <a data-linkid="10002782" href="" rel="nofollow">已完结</a>
+        </dd>
+       </dl>
+      </div>
+      <div class="list-container-hd list-container-hd-border clearfix">
+       <div id="j-list-advrs"></div>
+      </div>
+      <div class="tab-switch tab-progress">
+       <table class="list-task">
+        <colgroup>
+         <col />
+         <col width="110px" />
+         <col width="130px" />
+         <col width="105px" />
+        </colgroup>
+        {% for task in allTask %}
+         <tbody>
+			<tr>
+				<td>
+					<p>
+						<a class="list-task-title"  href="{% url 'worker_task_info' %}?task_id={{task.task_id}}"  data-zbjlog="{obj:'main'}">{{ task.title }}</a>
+					</p>
+					<p class="normal-p">
+						<span style="white-space: nowrap;color: #999;">截止日期：<span class="highlight">{{ task.deadline }}</span></span>
+						<span style="white-space: nowrap;color: #999;">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;定价：<span class="highlight">{{ task.price }}</span>&nbsp;&nbsp;&nbsp;币/题&nbsp;&nbsp;&nbsp;|</span>
+						<span class="text"><span class="highlight">{{ task.participants }}</span>&nbsp;&nbsp;参与&nbsp;&nbsp;&nbsp;</span>
+                        <span style="white-space: nowrap;color: #999;">|&nbsp;&nbsp;&nbsp;总题量：<span class="highlight">{{ task.total_subject }}</span>&nbsp;&nbsp;&nbsp;题&nbsp;&nbsp;&nbsp;</span>
+                        <span style="white-space: nowrap;color: #999;">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;已完成：<span class="highlight">{{ task.finished }}</span>&nbsp;&nbsp;&nbsp;题&nbsp;&nbsp;&nbsp;</span>
+					</p>
+				</td>
+				<td>
+					<a class="list-task-title" data-zbjlog="{obj:'main'}">正确率：<span class = "highlight">{{task.accuracy}}</span>%</a>
+				</td>
+			</tr>
+		 </tbody>
+        {% endfor %}
+
+       </table>
+       <div class="list-footer">
+        <div class="list-search-box">
+        </div>
+        <div class="pagination">
+         <ul>
+          <li class="active"><a href="//task.zbj.com/p1s5.html">1</a></li>
+          <li><a href="">2</a></li>
+          <li><a href="">3</a></li>
+          <li><a href="">4</a></li>
+          <li class="disabled"><a>...</a></li>
+          <li><a href="">10</a></li>
+          <li><a href="">&raquo;</a></li>
+         </ul>
+        </div>
+      </div>
+     </div>
+    </div>
+   </div>
+ </body>
+{% endblock extra_content%}

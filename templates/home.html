@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Buaa MT</title>
+	<link media="all" rel="stylesheet" href="static/css/home.css">
+
+</head>
+<body>
+	<div id="wrapper">
+		<!-- header of the page -->
+		<header class="signup-header" id="header">
+			<!-- page logo -->
+			<a href="/">
+				<img class="signup-logo" src="static/img/buaa_logo.png" alt="Amazon Mechanical Turk">
+			</a>
+		</header>
+		<!-- contain main informative part of the site -->
+		<main id="main">
+			<!-- contain the main content of the page -->
+			<div class="visual-block">
+				<h1 class="signup-heading">Get Started with <span class="nowrap">Buaa MT</span></h1>
+			</div>
+			<div class="flex-center">
+				<div class="signup-main">
+					<div class="signup-block">
+						<div class="signup-block-header">
+							<img src="static/img/requester.svg">
+							<h2 class="text-align-center">发布任务</h2>
+						</div>
+						<p class="text-align-center">Human intelligence through an API. Access a global, on-demand, 24/7 workforce.</p>
+						<a class="btn omni-onclick" href="{% url 'login_requester'%}">Requester Entrance</a>
+					</div>
+					<div class="signup-separator">
+						<div>or</div>
+					</div>
+					<div class="signup-block">
+						<div class="signup-block-header">
+							<img src="static/img/worker.svg">
+							<h2 class="text-align-center">我要标注</h2>
+						</div>
+						<p class="text-align-center">Make money in your spare time. Get paid for completing simple tasks.</p>
+						<a class="btn omni-onclick" href="{% url 'login_worker' %}">Worker Entrance</a>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+</body>
+</html>

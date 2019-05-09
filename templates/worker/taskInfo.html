@@ -1,0 +1,155 @@
+{% extends "worker/meBase.html" %}
+{% block title %}BuaaMt{% endblock %}
+{% block username %}{{ user.username }}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="static/worker/css/task_info/1.css" />
+  <link rel="stylesheet" href="static/worker/css/task_info/2.css" />
+  <style>[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{clip:rect(0,auto,auto,0);-ms-zoom:1.0001;}.ng-animate-active{clip:rect(-1px,auto,auto,0);-ms-zoom:1;}</style>
+  <link rel="stylesheet" href="static/worker/css/task_info/3.css" />
+  <link rel="stylesheet" href="static/worker/css/task_info/4.css" />
+  <link rel="stylesheet" href="http://apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css" />
+  <link rel="stylesheet" href="static/worker/css/task_info/5.css" />
+  <link rel="stylesheet" href="static/worker/css/task_info/6.css" />
+  <link rel="stylesheet" href="static/worker/css/task_info/7.css" />
+  <link rel="stylesheet" href="static/worker/css/task_info/8.css" />
+  <link rel="stylesheet" href="static/worker/css/task_info/9.css" />
+  <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+{% endblock extra_css%}
+{% block extra_content %}
+ <body>
+  <div class="container container-main">
+   <div class="mark-navigation clearfix">
+    <div class="bread-navigation">
+     <a href="/mark/task/index">任务大厅</a>
+     <span class="task-splite">/</span>
+     <span>{{ task.title }}</span>
+    </div>
+   </div>
+   <div class="project-detail-body">
+    <div class="task-flow-wrap" ng-controller="TaskFlowController" ng-init="init(446403,0,1)" ng-show="flowList.length &gt; 0" ng-cloak="">
+     <ul class="task-flow-list">
+      <li class="task-flow-item" ng-repeat="item in flowList" ng-click="jumpTo(item.id, markId, item.type)" ng-class="{'active-color': item.status==2||item.status==3||item.status==1&amp;&amp;item.type!=1, 'last-item': $last, 'disable-click': item.active}" ng-style="{'width': 100 / flowList.length + '%'}"> <span class="item-index-wrap">0<span ng-bind="$index+1"></span></span> <span class="item-field-title" ng-class="{'done': item.status &gt; 0}" ng-bind="item.title"></span> <span class="item-field-status-text" ng-if="item.status == -1">待解锁</span> <span class="item-field-status-text" ng-if="item.status == 0">未参与</span> <span class="item-field-status-text" ng-if="item.status == 1">已参与</span> <span class="item-field-status-text" ng-if="item.status == 2">已完成</span> <span class="item-field-status-text" ng-if="item.status == 3">已通过</span> <span class="item-field-status-text" ng-if="item.status == 4">未通过</span> <span class="item-field-status-text" ng-if="item.status == 5">审核中</span> </li>
+     </ul>
+    </div>
+    <div class="project-baseinfo-wrap clearfix">
+     <div class="mark-index-title-wrap">
+      <div class="mark-index-title">
+       <div class="mark-status color-open">
+          {{ task.status }}
+       </div> {{ task.title }}
+      </div>
+     </div>
+     <div class="mark-button-wrap clearfix">
+      <div class="mark-button-wrap-area">
+       <a id="js_mark_enter_btn__"  href = "{% url 'worker_do_task' %}?task_id={{ task.task_id }}" class="mark-enter-button button-red">开始标注</a>
+      </div>
+       {% if error_msg %}
+           <br>
+           <p style = "color: red">{{ error_msg }}</p>
+      {% endif %}
+      <div class="mark-other-button-wrap-area">
+       <div class="mark-quality-recruit" ng-controller="QualityRecruitController" ng-init="init(446403)" ng-cloak="" ng-show="data.valid == 1">
+       </div>
+      </div>
+      <div class="mark-env-tips">
+      </div>
+     </div>
+     <ul class="mark-info-detail-wrap">
+	 <li> <span class="mark-info-detail-title">任务类型：</span> <span> {{ task.type }} </span> </li>
+      <li class="mark-score-info mark-tip-icon-outer-wrap"> <span class="mark-info-detail-title">任务价格：</span>
+	  <span> <span class="mark-info-detail-red">{{ task.price }}</span> 币/题 </span>
+      </li>
+      <li> <span class="mark-info-detail-title">题量：</span> <span> <span>{{ task.total_subject }}</span> 题 </span> </li>
+      <li> <span class="mark-info-detail-title">发布者：</span> <span class="mark-info-detail-cnt"> <span>{{ task.publisher }}</span></li>
+      <li> <span class="mark-info-detail-title">发布日期：</span> <span class="mark-info-detail-cnt"> <span>{{ task.publish_time }}</span> </li>
+      <li> <span class="mark-info-detail-title">截止日期：</span> <span class="mark-info-detail-cnt"> <span>{{ task.deadline }}</span> </li>
+      <li> <span class="mark-info-detail-title">已参与：</span> <span> <span>{{ task.current_worker_count }}</span> 人 </span> </li>
+      <li class="mark-info-detail-content"></li>
+      <li> <span class="mark-info-detail-title">等级要求：</span> <span> {{ task.rank_required }} </span> </li>
+     </ul>
+    </div>
+    <div class="mark-tab-wrap">
+     <ul>
+      <li id="information-switch-tab" class="js-mark-tab-item mark-tab-item mark-tab-active-item">标注指南</li>
+      <li id="rank-switch-tab" class="js-mark-tab-item mark-tab-item">拓展项一</li>
+      <li id="report-switch-tab" class="js-mark-tab-item mark-tab-item">拓展项二</li>
+     </ul>
+    </div>
+    <div id="information-block" class="mark-detail-div">
+     <div id="detail_intro_div">
+      <div class="background mt10">
+       <div class="bar-name">
+         项目背景
+       </div>
+       <p><span style="font-size: 16px;"><strong>{{ task.describe }}</strong></span></p>
+       <table cellpadding="0" cellspacing="0" width="1221" style="width: 568px;">
+        <colgroup>
+         <col width="207" style=";width:207px" />
+         <col width="1015" style=";width:1015px" />
+        </colgroup>
+       </table>
+       <p><br /></p>
+      </div>
+      <div class="standards mt10"></div>
+      <div class="instances mt10"></div>
+     </div>
+    </div>
+    <div id="rank-block" class="hide mark-detail-div">
+     <div class="project-user-rank-info">
+      <div class="user-detail-wrap">
+       <div id="user_rank_list">
+        <div class="table-header">
+         <table>
+          <thead>
+           <tr>
+            <th class="user-rank">名次</th>
+            <th class="user-name" style="width: 50%;">用户</th>
+            <th class="done-page-count">答题数</th>
+            <th class="pre-rate">正确率</th>
+           </tr>
+          </thead>
+          <tbody class="table-content">
+          </tbody>
+         </table>
+        </div>
+       </div>
+      </div>
+     </div>
+     <script type="text/html" id="user_rank_list_tpl"></script>
+</div>
+    <div id="report-block" class="hide mark-detail-div">
+     <div class="project-user-detail-page-info-filter">
+      <div class="user-detail-wrap">
+       <div class="user-detail-content">
+        <div id="union_question_list">
+         <table class="bui-table">
+          <thead>
+           <tr>
+            <th class="page-id">题目ID</th>
+            <th class="answer-time">答题时间</th>
+            <th class="check-status">审核状态</th>
+            <th class="operate">操作</th>
+           </tr>
+          </thead>
+          <tbody class="table-content">
+          </tbody>
+         </table>
+        </div>
+       </div>
+       <div id="pagination_div" class="user-detail-pagination">
+        <ul>
+         <li><a id="first" class="pagination-page" page_id="-3">第一页</a></li>
+         <li><a id="previous" class="pagination-page" page_id="-2">上一页</a></li>
+         <li><a class="pagination-page active" page_id="1">1</a></li>
+         <li><a id="next" class="pagination-page" page_id="-1">下一页</a></li>
+         <li><a id="last" class="pagination-page" page_id="0">最后一页</a></li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+<script src="static/worker/js/task_info/worker_view.js"></script>
+</body>
+{% endblock extra_content%}

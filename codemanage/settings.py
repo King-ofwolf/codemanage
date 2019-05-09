@@ -135,9 +135,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "recommend", "static"),
+    #os.path.join(BASE_DIR, "recommend", "static"),
 ]
 
 AUTH_USER_MODEL = 'users.User'
 SITE_ID = 1
-

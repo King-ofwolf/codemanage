@@ -1,0 +1,126 @@
+
+
+
+<body class="list task-hall">
+
+  <div id = "category"></div>
+
+  </div>
+
+
+ <script>
+
+    var subjects = {{ subjects|safe }};//题目列表
+    var deadline = {{ deadline|safe }};//截止日期
+    var user_id = {{ user_id|safe }};//user_id
+    var task_id = {{ task_id|safe }};//task_id
+    var html_layout = {{ html_layout|safe }};//html_layout
+    var subject_count = subjects.length;
+
+    //core  模板替换
+    document.getElementById('category').innerHTML = html_layout
+
+    console.log(subjects);
+
+    var _result = []
+
+    var cur_subject_index = 0;//题目索引
+    var cur_subject_id = -1;//题目id
+
+    document.getElementById('subject_count').innerHTML = subject_count;
+    document.getElementById('deadline').innerHTML = deadline;
+
+
+    var toSubject = function(index){
+
+        console.log('当前题号：' + index)
+
+        var cur_subject = subjects[index];
+        cur_subject_index = index;
+        cur_subject_id = cur_subject.id;
+
+        document.getElementById('subject_id').innerHTML = index + 1;
+
+        //change the button
+        button_1 = document.getElementById('button_1');
+        button_2 = document.getElementById('button_2');
+
+        //题目选择按钮
+        if(index == 0){
+            button_2.style.display = 'none';
+            button_1.innerHTML = '下一题';
+            button_2.style.color = 'black';
+            button_1.onclick = function(){
+                if(1){
+                    toSubject(index + 1);
+                }
+                else{
+
+                }
+            }
+        }
+        else if(index == subject_count - 1)//the last subject
+        {
+            button_2.style.display = '';
+            button_1.innerHTML = '上一题';
+            button_2.innerHTML = '提交';
+            button_2.style.color = 'red';
+            button_1.onclick = function(){
+                toSubject(index - 1);
+            }
+            button_2.onclick = function(){
+                 if(1){
+                    //post('/worker_submit_result_01', _result);
+                }
+                else{
+
+                }
+            }
+        }
+        else{
+            button_2.style.display = '';
+            button_1.innerHTML = '上一题';
+            button_2.innerHTML = '下一题';
+            button_2.style.color = 'black';
+            button_1.onclick = function(){
+                toSubject(index - 1);
+            }
+            button_2.onclick = function(){
+                if(1){
+                    toSubject(index + 1);
+                }
+                else{
+                }
+            }
+        }
+    }
+	//////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    function post(URL) {
+
+        console.log('---------------------------')
+        console.log(_result)
+        console.log('---------------------------')
+        var temp = document.createElement("form");
+        temp.action = URL;
+        temp.method = "post";
+        temp.style.display = "none";
+
+        //标注结果
+        var answer_list = JSON.stringify(_result)
+        var opt1 = document.createElement("textarea");
+        opt1.name = 'answer_list';
+        opt1.value = answer_list;
+        temp.appendChild(opt1);
+
+        document.body.appendChild(temp);
+        temp.submit();
+        return temp;
+    }
+
+    toSubject(cur_subject_index);
+
+  </script>
+ </body>

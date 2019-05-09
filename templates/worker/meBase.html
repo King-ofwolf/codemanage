@@ -1,0 +1,127 @@
+{% load static %}
+{% load staticfiles %}
+{% load login_tags %}
+
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="shortcut icon" href="" type="image/x-icon" />
+  <link rel="icon" sizes="any" href="" />
+  <link rel="stylesheet" href="{% static 'worker/css/global.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'worker/css/all.min.css' %}"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- css -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/highlights/github.css' %}">
+
+    <style>
+        span.highlighted {
+            color: red;
+        }
+    </style>
+
+    <!-- js -->
+    <script src="{% static 'blog/js/jquery-3.4.0.js' %}"></script>
+    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/js/pace.min.js' %}"></script>
+    <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'blog/js/script.js' %}"></script>
+
+
+ {% block extra_css %}
+
+ {% endblock extra_css%}
+
+ </head>
+ <body>
+  <div class="container-head">
+   <div class="main-head">
+    <div class="main-head-user">
+
+      <p>你已登录，欢迎你：<a href="#">{{ username }}</a><span><button class="btn btn-default"><a href="{% url 'users:logout' %}">注销登录</a></button></span></p>
+
+
+
+
+    </div>
+    <div class="main-head-logo">
+     <a href="/"> <img src="{% static 'img/buaa_logo.png' %}" width = "100%" height = "130%"/></a>
+    </div>
+    <div class="main-head-user-response hidden"></div>
+   </div>
+   <div class="main-nav">
+    <ul class="clearfix">
+     <li><a href="{% url 'main:index'%}">主页</a></li>
+        {% if user.is_authenticated %}
+     <li style="position:relative"><a href = "{% url 'blog:worker_user_center'%}">个人</a></li>
+        {% endif %}
+    </ul>
+   </div>
+  </div>
+
+  {% block extra_content %}{% endblock extra_content%}
+
+
+<main class="container">
+
+  {% block container %}
+
+{% endblock container%}
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                {% block main %}
+                {% endblock main %}
+            </main>
+            <aside class="col-md-4">
+                {% block aside %}
+                {% endblock aside %}
+                {% block toc %}
+                {% endblock toc %}
+
+            </aside>
+        </div>
+    </div>
+</div>
+<footer id="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Menu -->
+<div class="overlay overlay-hugeinc">
+    <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
+    <nav>
+        <ul>
+            <li><a href="{% url 'blog:worker_home_page' %}">首页</a></li>
+            <li><a href="#">博客</a></li>
+            <li><a href="#">关于</a></li>
+            <li><a href="#">联系</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+
+
+<script src="{% static 'blog/js/script.js' %}"></script>
+
+</main>
+
+
+ </body>
+</html>

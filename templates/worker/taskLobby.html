@@ -1,0 +1,148 @@
+{% extends "worker/meBase.html" %}
+{% block title %}任务大厅|BuaaMt{% endblock %}
+{% block username %}{{ user.username }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_lobby/1.css" />
+    <link rel="stylesheet" type = "text/css" href="static/worker/css/task_lobby/2.css" />
+{% endblock extra_css%}
+{% block extra_content %}
+<body class = "new">
+  <div class="blank20"></div>
+  <!--主体开始-->
+  <div class="main">
+   <div class="rwlb-left">
+    <div class="fenglei-list">
+     <div class="fl-box">
+      <p class="t">任务类型</p>
+      <ul class="list">
+       <a rel="nofollow" href=""> <li class="cur">全部</li> </a>
+       <a href=""> <li>文本标注 </li> </a>
+       <a href=""> <li>图片标注</li> </a>
+       <a href=""> <li>视频标注</li> </a>
+       <a href=""> <li>其他 </li> </a>
+      </ul>
+     </div>
+     <div class="fl-box">
+      <p class="t">任务状态：</p>
+      <ul class="list">
+       <a rel="nofollow" href=""> <li class="cur">全部</li> </a>
+       <a rel="nofollow" href=""> <li>进行中</li> </a>
+       <a rel="nofollow" href=""> <li>已完结</li> </a>
+      </ul>
+     </div>
+     <div class="fl-box">
+      <p class="t">等级要求</p>
+      <ul class="list">
+       <a rel="nofollow" href=""> <li class="cur">全部</li> </a>
+       <a rel="nofollow" href=""> <li>无要求</li> </a>
+       <a rel="nofollow" href=""> <li>等级一</li> </a>
+       <a rel="nofollow" href=""> <li>等级二</li> </a>
+       <a rel="nofollow" href=""> <li>等级三</li> </a>
+      </ul>
+     </div>
+     <div class="fl-box last">
+      <p class="t">价格</p>
+      <ul class="list">
+       <a rel="nofollow" href=""> <li class="cur">全部</li> </a>
+       <a rel="nofollow" href=""> <li>0-10币/题</li> </a>
+       <a rel="nofollow" href=""> <li>10-100币/题</li> </a>
+       <a rel="nofollow" href=""> <li>100币以上/题</li> </a>
+     </div>
+    </div>
+
+    <div class="rwlb-search">
+     <p class="pxdown" id="rwlbPxBut">默认排序</p>
+     <div class="search-box">
+      <form id="myform" action="" method="get">
+       <input type="hidden" id="myselect_cate" name="select_cate" value="0" />
+       <input type="hidden" id="myselect_status" name="select_status" value="99" />
+       <input type="hidden" id="myselect_type" name="select_type" value="0" />
+       <input type="hidden" id="myselect_time" name="select_time" value="0" />
+       <input type="hidden" id="myselect_area" name="select_area" value="0" />
+       <input type="hidden" id="myselect_amount" name="select_amount" value="0" />
+       <input type="hidden" id="p" name="p" value="" />
+       <input type="text" id="mykeyword" name="keyword" class="gjc" placeholder="关键词搜索" required="" oninvalid="setCustomValidity('请输入关键词');" oninput="setCustomValidity('');" />
+       <input class="but" type="submit" value="确定" />
+      </form>
+     </div>
+    </div>
+    <link type="text/css" rel="stylesheet" href="http://www.52solution.com/Public/Home/css/grzx1122.css" />
+    <div class="blank10"></div>
+
+     {% for task in allTask %}
+    <div class="rw-list ztctask-list">
+     <div class="list-left">
+      <div class="yingyongly">
+       <p class="ly">{{ task.type }}<br /></p>
+       <p class="jbzt">{{ task.status }}</p>
+      </div>
+      <a target="_blank" href="{% url 'worker_task_info' %}" title="垃圾邮件分类"><h2>{{ task.title }}</h2></a>
+      <img src="" style="margin-top:3px;" title="标记" />
+      <p class="des">{{ task.publisher }} <span><br />发布时间：{{ task.publish_time }}</span><span>结束时间：{{ task.deadline }}</span></p>
+     </div>
+     <div class="xmys">
+      任务价格：
+      <span>{{ task.price }}积分/题</span>
+      <br />当前参与人数
+      <span>{{ task.current_worker_count }}人</span>
+     </div>
+     <div class="ckxq">
+      <a href="{% url 'worker_task_info' %}?task_id={{task.task_id}}" title="垃圾邮件分类"><p class="ck-but">查看详情</p></a>
+      <br />
+      <p>xxxx</p>
+     </div>
+    </div>
+
+    {% endfor %}
+    <div class="blank20"></div>
+    <div class="new-fenye">
+     <span>1</span>
+     <a href="">2</a>
+     <a href="">3</a>
+     <a href="">4</a>
+     <a href="">5</a>
+     <a href="">6</a>
+     <a href="">7</a>
+     <a href="">
+      <div class="next">
+       下一页
+       <p id="triangle-right"></p>
+      </div></a>
+     <a href="">尾页</a>
+    </div>
+   </div>
+   <!--左栏结束-->
+   <!--主体结束-->
+   <script>
+	function future() {
+		var f = $(".xp-name").val();
+		if(f ==''){
+			return false;
+		}
+        $.post("/index.php/Home/Kuaibao/futureSearchBox.html", {"textSearch": f}, function (data) {
+            var d = eval("(" + data + ")");
+            if (d.code == 1) {
+            	var u ="http://cn.futureelectronics.com/zh/Search.aspx?dsNav=Ntk:PlainTextSearch|"+f+"|3|,Ny:True,Nea:True";
+            	window.location.href =u;
+                return false;
+            }
+        });
+    }
+</script>
+   <div class="pf-outbox">
+    <div class="pf-big-box">
+     <a href="http://www.52solution.com/index.php/Home/Coupon/ticket.html" target="_blank"><img src="/images/20171109001.png" /></a>
+     <p class="pf-close"></p>
+    </div>
+   </div>
+   <style>
+.pf-outbox{width:100%; height:99px; text-align:center; position:fixed; left:0; bottom:5px; }
+.pf-big-box{width:1290px; height:99px;margin:0 auto; position:relative;}
+.pf-close{width:80px; height:80px; cursor:pointer; position:absolute; right:30px; top:10px; z-index:500;}
+.pf-left-box{width:108px; hiehgt:74px; float:left; position:fixed; left:0; bottom:5px; display:none; cursor:pointer;}
+.username p a{color:#f90;}
+#udesk_btn{display:none;}
+</style>
+</div>
+</body>
+{% endblock extra_content%}

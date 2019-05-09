@@ -1,0 +1,1635 @@
+/* 
+* @Author: Marte
+* @Date:   2017-08-22 15:25:24
+* @Last Modified by:   Marte
+* @Last Modified time: 2017-08-24 17:01:02
+*/
+
+.clear:after {
+    content: "";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0;
+}
+
+.clear {
+    zoom: 1;
+}
+
+.my_file {
+    border: 1px solid #d2d2d2;
+    margin-bottom: 100px;
+    /*border-bottom: 0 none;*/
+}
+
+    .my_file .header {
+        border-bottom: 1px solid #d2d2d2;
+        height: 64px;
+        background: #fff;
+        margin-bottom: 1px;
+    }
+
+        .my_file .header span {
+            display: block;
+            float: left;
+            width: 220px;
+            height: 100%;
+            background: #eaeef0;
+            border-right: 1px solid #d2d2d2;
+            border-bottom: 1px solid #d2d2d2;
+            text-align: center;
+            line-height: 64px;
+            color: #333;
+        }
+
+            .my_file .header span img {
+                padding-right: 15px;
+                display: inline-block;
+            }
+
+            .my_file .header span a {
+                color: #333;
+                display: block;
+                width: 219px;
+                height: 100%;
+            }
+
+        .my_file .header .current {
+            position: relative;
+            top: -1px;
+            height: 66px;
+            border-top: 5px solid #268ff1;
+            border-bottom: 1px solid #fff;
+            background: #fff;
+            color: #268ff1;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+            .my_file .header .current a {
+                border: none;
+                color: #268ff1;
+            }
+
+    .my_file .body {
+        font-size: 14px;
+    }
+
+    .my_file .input_box {
+    }
+
+        .my_file .input_box p {
+            color: #268ff1;
+            font-size: 14px;
+            float: left;
+            line-height: 52px;
+            padding-left: 10px;
+        }
+
+            .my_file .input_box p.pinfo {
+                display: block;
+                clear: both;
+                line-height: 30px;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+                .my_file .input_box p.pinfo a {
+                    color: #278ff0;
+                    padding: 0px 5px;
+                    display: inline-block;
+                    margin: 0px;
+                    float: none;
+                }
+
+
+        .my_file .input_box div, .my_file .input_box select {
+            float: right;
+            margin-right: 10px;
+            margin-top: 12px;
+        }
+
+        .my_file .input_box select {
+            height: 32px;
+        }
+
+        .my_file .input_box div {
+            position: relative;
+        }
+
+            .my_file .input_box div input {
+                width: 200px;
+                height: 32px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                line-height:32px;
+            }
+
+            .my_file .input_box div img {
+                position: absolute;
+                top: 0;
+                right: 0;
+                cursor: pointer;
+            }
+
+    .my_file .table_title {
+        background: #eef2f4;
+    }
+
+        .my_file .table_title li {
+            line-height: 56px;
+        }
+
+    .my_file .table li {
+        height: 100%;
+        text-align: center;
+    }
+
+        .my_file .table li p {
+            line-height: 50px;
+        }
+
+        .my_file .table li.col-2 {
+            display: table;
+        }
+
+            .my_file .table li.col-2 div {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+    .my_file .table_title {
+        height: 60px;
+        border-top: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+        .my_file .table_title .col-9 {
+            padding-right: 231px;
+            position: relative;
+        }
+
+            .my_file .table_title .col-9 span {
+                position: absolute;
+                top: 0;
+                right: 0;
+                display: block;
+                width: 231px;
+            }
+
+    .my_file .table_file {
+        margin-bottom: 10px;
+        border-top: 1px solid #e6e6e6;
+    }
+
+        .my_file .table_file:last-child {
+            margin-bottom: 0;
+        }
+
+        .my_file .table_file:first-child {
+            border-top: 0 none;
+        }
+
+        .my_file .table_file li.col-1, .my_file .table_file li.col-2 {
+            border-right: 1px solid #e6e6e6;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .my_file .table_file li.col-9 .file_box {
+            border-right: 1px solid #e6e6e6;
+            border-bottom: 1px solid #e6e6e6;
+            position: relative;
+            padding-right: 231px;
+        }
+
+        .my_file .table_file li.col-9 p.pfilename {
+            text-align: left;
+            /*padding-left: 41px;*/
+            padding: 12px 10px 12px 41px;
+            line-height: 26px;
+            border-right: 1px solid #e6e6e6;
+            /*text-overflow: ellipsis;
+    overflow: hidden;
+    white-space:nowrap;*/
+        }
+
+        .my_file .table_file li.col-9 p.pdf {
+            background: url(/content/filelist/pdf.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.word {
+            background: url(/content/filelist/word.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.excel {
+            background: url(/content/filelist/excel.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.ppt {
+            background: url(/content/filelist/ppt.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.cad {
+            background: url(/content/filelist/cad.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.caj {
+            background: url(/content/filelist/caj.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.pic {
+            background: url(/content/filelist/pic.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.txt {
+            background: url(/content/filelist/txt.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.html {
+            background: url(/content/filelist/html.png) no-repeat left top;
+        }
+        .my_file .table_file li.col-9 p.epub {
+            background: url(/content/filelist/epub.png) no-repeat left top;
+        }
+
+        .my_file .table_file li.col-9 p.upfile {
+            color: #787878;
+        }
+
+        .my_file .table_file:nth-child(even) {
+            background: #f7f7f7;
+        }
+
+        .my_file .table_file li.col-9 .doing {
+            padding-top: 17px !important;
+            height: 24px;
+            line-height: 24px;
+            color: #333;
+            width: 142px;
+        }
+
+        .my_file .table_file li.col-9 .fail {
+            padding-top: 17px !important;
+            height: 24px;
+            line-height: 24px;
+            color: #c80202;
+            width: 142px;
+        }
+
+            .my_file .table_file li.col-9 .fail img {
+                margin: 0px 5px;
+                display: inline-block;
+            }
+
+        .my_file .table_file li.col-9 span {
+            display: inline-block;
+            height: 100%;
+            width: 68px;
+        }
+        .my_file .table_file li.col-9 .copy_bar span.copy_btn{
+            width:68px;
+        }
+        .my_file .table_file li.col-9 .copy_bar span {
+            width: auto;
+        }
+
+        .my_file .table_file li.col-9 img {
+            margin: auto 15px;
+            vertical-align: middle;
+        }
+
+        .my_file .table_file li.col-9 .doing img {
+            margin: 3px 5px 0px 5px;
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+
+        .my_file .table_file li.col-9 .po_right {
+            height: 58px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            position: absolute;
+            padding-top: 10px;
+            margin-top: -29px;
+            top: 50%;
+            right: 0;
+            width: 231px;
+        }
+
+            .my_file .table_file li.col-9 .po_right span img.downfile {
+                cursor: pointer;
+            }
+
+            .my_file .table_file li.col-9 .po_right span img.fenxiang {
+                cursor: pointer;
+            }
+
+        .my_file .table_file li.col-1 {
+            border-right: 0 none;
+            position: relative;
+        }
+
+        .my_file .table_file .col-1 img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -19px;
+            margin-top: -19px;
+            cursor: pointer;
+        }
+
+@media (max-width:441px) {
+    .my_file .header {
+        width: 100%;
+    }
+
+        .my_file .header span {
+            width: 50%;
+            border-right: 0 none;
+        }
+
+            .my_file .header span a {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+}
+
+@media (max-width:640px) {
+    .my_file .table_title {
+        display: none;
+    }
+
+    .my_file .table_file {
+        margin-bottom: 20px;
+    }
+
+    .my_file {
+        border: 0 none;
+    }
+
+        .my_file .table_file li.col-9 .po_right {
+            width: 142px;
+        }
+
+        .my_file .table_file li.col-9 .file_box {
+            padding-right: 142px;
+        }
+
+        .my_file .table_file li.col-9 img {
+            margin: 0 9px;
+        }
+
+        .my_file .table_file li.col-9 span {
+            width: 38px;
+        }
+}
+
+@media (max-width:768px) {
+    .my_file .input_box p, .my_file .input_box div, .my_file .input_box select {
+        float: none;
+    }
+
+    .my_file .input_box p {
+        text-align: center;
+    }
+
+    .my_file .input_box div, .my_file .input_box select {
+        width: 80%;
+        margin: 0 auto 20px;
+        display: block;
+    }
+
+        .my_file .input_box div input {
+            width: 100%;
+            cursor: pointer;
+        }
+}
+
+
+/*个人资料*/
+.my_data {
+    height: 719px;
+}
+
+    .my_data .my_data_personal {
+        position: relative;
+        top: -2px;
+        z-index: 10;
+        height: 654px;
+        padding-left: 220px;
+    }
+
+        .my_data .my_data_personal .my_left {
+            width: 219px;
+            background: url(/Content/member/title_arrow.png) no-repeat center top;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 655px;
+            border-right: 1px solid #e6e6e6;
+        }
+
+        .my_data .my_data_personal .touxiang {
+            position: relative;
+            text-align: center;
+            padding-top: 41px;
+            margin-bottom: 12px;
+        }
+
+            .my_data .my_data_personal .touxiang p {
+                display: block;
+                width: 88px;
+                height: 88px;
+                position: absolute;
+                top: 41px;
+                left: 50%;
+                margin-left: -44px;
+                background: url(/Content/Images/headmask.png);
+            }
+
+            .my_data .my_data_personal .touxiang span {
+                display: block;
+                width: 29px;
+                height: 28px;
+                position: absolute;
+                left: 50%;
+                top: 29px;
+                margin-left: 10px;
+            }
+
+                .my_data .my_data_personal .touxiang span.spno {
+                    background: url(/Content/vip/vip_no.png) no-repeat center center;
+                }
+
+                .my_data .my_data_personal .touxiang span.sptong {
+                    background: url(/Content/vip/vip_tong.png) no-repeat center center;
+                }
+
+                .my_data .my_data_personal .touxiang span.spyin {
+                    background: url(/Content/vip/vip_yin.png) no-repeat center center;
+                }
+
+                .my_data .my_data_personal .touxiang span.spjin {
+                    background: url(/Content/vip/vip_jin.png) no-repeat center center;
+                }
+
+    .my_data .my_left .tel {
+        text-align: center;
+        margin-bottom: 38px;
+    }
+
+        .my_data .my_left .tel span {
+            margin-right: 10px;
+        }
+
+    .my_data .my_left .file_num {
+        padding: 0 20px;
+    }
+
+        .my_data .my_left .file_num p {
+            border-bottom: 1px solid #d2d2d2;
+            font-size: 14px;
+            padding-left: 40px;
+            height: 48px;
+            line-height: 48px;
+            background: url(/Content/member/icon_zhaunhuan.png) no-repeat 6px center;
+        }
+
+        .my_data .my_left .file_num > p + p {
+            background-image: url(/Content/member/icon_fenxiang.png);
+        }
+
+        .my_data .my_left .file_num p span {
+            color: #268ff1;
+        }
+
+    .my_data .my_right ul {
+        padding: 53px 156px 0;
+        font-size: 16px;
+        margin-bottom: 73px;
+    }
+
+        .my_data .my_right ul li {
+            height: 58px;
+            line-height: 58px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .my_data .my_right ul .data_title span {
+            width: 80px;
+            text-align: right;
+            display: inline-block;
+            color: #949494;
+        }
+
+        .my_data .my_right ul .data_title b {
+            font-weight: 400;
+            color: #000;
+        }
+
+        .my_data .my_right ul .data_title .eyes {
+            display: inline-block;
+            width: 18px;
+            height: 13px;
+            background: url(/Content/member/icon_yincang.png) no-repeat center center;
+            margin-left: 23px;
+            cursor: pointer;
+        }
+
+        .my_data .my_right ul .data_content {
+            width: 122px;
+            text-align: left;
+        }
+
+            .my_data .my_right ul .data_content a {
+                color: #278ff0;
+            }
+
+        .my_data .my_right ul .time .data_content a {
+            color: #40b143;
+            text-decoration: underline;
+        }
+
+@media (min-width: 640px) and (max-width:1023px) {
+    .my_data .my_right ul {
+        padding: 53px 20px 0;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 640px) {
+    .my_data .my_right ul {
+        padding: 53px 20px 0;
+    }
+
+        .my_data .my_right ul .data_title, .my_data .my_right ul .data_content {
+            float: none;
+        }
+
+        .my_data .my_right ul li {
+            height: auto;
+            line-height: 40px;
+        }
+
+        .my_data .my_right ul .data_title span {
+            width: auto;
+        }
+}
+
+@media (max-width: 480px) {
+    .my_data .my_data_personal {
+        padding-left: 0;
+    }
+
+        .my_data .my_data_personal .my_left {
+            width: 100%;
+            position: static;
+            background-position: 0 top;
+            height: auto;
+        }
+
+    .my_data .my_right ul {
+        padding: 20px 20px 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .my_data .my_right ul .data_title, .my_data .my_right ul .data_content {
+        float: none;
+    }
+
+    .my_data .my_right ul li {
+        height: auto;
+        line-height: 40px;
+    }
+
+    .my_data .my_right ul .data_title span {
+        width: auto;
+    }
+}
+
+/*登录页*/
+.login_top {
+    height: 85px;
+    overflow: hidden;
+}
+
+    .login_top .logo {
+        min-width: 236px;
+        line-height: 85px;
+    }
+
+        .login_top .logo img {
+            position: relative;
+            top: -4px;
+        }
+
+        .login_top .logo span {
+            font-size: 26px;
+        }
+
+    .login_top i {
+        font-size: 24px;
+        color: #278ff0;
+        font-style: normal;
+        padding-left: 14px;
+        background: url(/Content/login/blue_dot.png) no-repeat left center;
+        margin-left: 9px;
+    }
+
+.login_banner {
+    background: url(/Content/login/login_banner.jpg) no-repeat center center;
+    height: 570px;
+}
+
+    .login_banner .content {
+        width: 1440px;
+        margin: 0 auto;
+        height: 100%;
+        position: relative;
+    }
+
+    .login_banner .text {
+        padding: 5px 0 0 48px;
+        position: absolute;
+        background: url(/Content/login/safe.png) no-repeat left top;
+        color: #fff;
+        left: 504px;
+        top: 130px;
+    }
+
+        .login_banner .text h4 {
+            font-size: 34px;
+            line-height: 100%;
+            margin-bottom: 18px;
+        }
+
+        .login_banner .text h3 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 100%;
+            margin-bottom: 30px;
+        }
+
+        .login_banner .text p {
+            padding-left: 22px;
+            background: url(/Content/login/dot.png) no-repeat left center;
+            font-size: 18px;
+            line-height: 36px;
+        }
+
+    .login_banner .login_form {
+        width: 430px;
+        height: 472px;
+        background: #fff;
+        border-radius: 10px;
+        position: absolute;
+        top: 51px;
+        right: 41px;
+        -webkit-box-shadow: 0 4px 10px rgba(4,101,191,0.8);
+        box-shadow: 0 4px 10px rgba(4,101,191,0.8);
+        padding: 5px 56px 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+        .login_banner .login_form h3 {
+            margin-bottom: 31px;
+        }
+
+            .login_banner .login_form h3 span {
+                display: inline-block;
+                width: 103px;
+                cursor: pointer;
+                margin: 0 25px;
+                text-align: center;
+                color: #5a5a5a;
+                line-height: 48px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+                .login_banner .login_form h3 span.current {
+                    border-bottom: 3px solid #1888f0;
+                    color: #278ff0;
+                }
+
+        .login_banner .login_form input {
+            border: none;
+        }
+
+        .login_banner .login_form p.pinput {
+            width: 100%;
+            height: 42px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+            .login_banner .login_form p.pinput input {
+                width: 100%;
+                height: 42px;
+                line-height:42px;
+                border: 1px solid #d2d2d2;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                border-radius: 3px;
+                padding-left: 40px;
+            }
+
+            .login_banner .login_form p.pinput img {
+                position: absolute;
+                top: 12px;
+                left: 12px;
+            }
+
+
+        .login_banner .login_form .middle_input {
+            padding-right: 110px;
+            position: relative;
+        }
+
+            .login_banner .login_form .middle_input span {
+                display: block;
+                width: 98px;
+                height: 42px;
+                border-radius: 3px;
+                border: 1px solid #d2d2d2;
+                position: absolute;
+                top: 0;
+                right: 0;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                cursor: pointer;
+            }
+
+        .login_banner .login_form .msg_code span {
+            border-color: #238ffe;
+            color: #278ff0;
+            background: #ecf5ff;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .login_banner .login_form .login {
+            width: 100%;
+            border-radius: 3px;
+            height: 42px;
+            background: #2e94f3;
+            text-align: center;
+            line-height: 42px;
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+            cursor: pointer;
+            margin: 0px 0px 6px 0px;
+            padding: 0px;
+            display:inline-block;
+        }
+
+            .login_banner .login_form .login:hover {
+                background: #68b5fc;
+            }
+
+        .login_banner .login_form .login2 {
+            text-align: center;
+            line-height: 40px;
+            display: block;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .login_banner .login_form .login1 {
+            text-align: left;
+            line-height: 40px;
+            display: block;
+            width: 100%;
+            font-size: 14px;
+        }
+
+            .login_banner .login_form .login1 .left {
+                color: #5a5a5a;
+            }
+
+        .login_banner .login_form .left a {
+            color: #5a5a5a;
+        }
+
+        .login_banner .login_form .login1 .right {
+            color: #278ff0;
+        }
+
+        .login_banner .login_form .or {
+            text-align: center;
+            background: url(/Content/login/login_line.png) no-repeat center center;
+            color: #bbbbbb;
+            margin-bottom: 12px;
+        }
+
+        .login_banner .login_form .other_way {
+            padding: 0 7px;
+        }
+
+            .login_banner .login_form .other_way p, .login_banner .login_form .other_way a {
+                display: inline-block;
+                width: 136px;
+                height: 39px;
+                border: 1px solid #31a4fd;
+                padding-left: 58px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                line-height: 37px;
+                font-size: 14px;
+                cursor: pointer;
+                margin: 0px auto;
+            }
+
+                .login_banner .login_form .other_way p.qq, .login_banner .login_form .other_way a.qq {
+                    background: url(/Content/login/QQ.png) no-repeat 30px center;
+                    color: #31a4fd;
+                }
+
+                .login_banner .login_form .other_way p.weixin {
+                    padding-left: 55px;
+                    background: url(/Content/login/weixin.png) no-repeat 26px center;
+                    color: #16be25;
+                    border-color: #16be25;
+                    float: right;
+                }
+
+.copyrightn {
+    text-align: center;
+    color: #4d4d4d;
+    padding: 40px 0;
+}
+
+/*登陆注册页单独样式*/
+.login2_banner .login_form .long_input {
+    padding-right: 0;
+}
+
+.login2_banner .login_form h3 {
+    margin-bottom: 51px;
+}
+
+.register {
+    margin: 0px auto;
+    padding: 0px;
+    background-image: url(/Content/login/register_bg.png);
+}
+
+    .register .register_text {
+        position: absolute;
+        top: 193px;
+        left: 41px;
+    }
+
+@media (max-width:1440px ) {
+    .login_banner .content {
+        width: 100%;
+    }
+
+    .login_banner .text h3 {
+        font-size: 32px;
+    }
+
+    .login_banner .login_form {
+        right: 40px;
+    }
+}
+
+@media (max-width:1280px ) {
+    .login_banner .text {
+        left: 25%;
+    }
+
+    .register .register_text {
+        top: 241px;
+    }
+}
+
+@media (max-width:1000px ) {
+    .login_banner .text {
+        display: none;
+    }
+}
+
+@media (max-width:920px ) {
+    .register .register_text {
+        display: none;
+    }
+
+    .register {
+        background-position: -710px center;
+    }
+}
+
+@media (max-width:510px ) {
+    .login_banner .content {
+        padding: 51px 20px 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .login_banner .login_form {
+        width: 100%;
+        max-width: 430px;
+        position: static;
+        margin: 0 auto;
+        padding: 5px 15px 0;
+    }
+
+        .login_banner .login_form h3 {
+            max-width: 318px;
+            width: 100%;
+            margin: 0 auto 31px;
+        }
+
+            .login_banner .login_form h3 span {
+                width: 50%;
+                max-width: 103px;
+                margin: 0;
+            }
+}
+
+@media (max-width:360px ) {
+    .login_banner .login_form .other_way p {
+        width: 110px;
+        padding-left: 44px;
+        cursor: pointer;
+    }
+
+        .login_banner .login_form .other_way p.qq {
+            background-position: 15px center;
+        }
+
+        .login_banner .login_form .other_way p.weixin {
+            padding-left: 39px;
+            background-position: 10px center;
+        }
+}
+
+/*使用协议*/
+.agreement_top {
+    -webkit-box-shadow: 0 3px 10px rgba(7,88,172,0.4);
+    box-shadow: 0 3px 10px rgba(7,88,172,0.4);
+    overflow: hidden;
+}
+
+.agreement {
+    color: #333;
+    font-size: 14px;
+}
+
+    .agreement h2 {
+        line-height: 120px;
+        text-align: center;
+    }
+
+    .agreement h4, .agreement p {
+        margin-bottom: 36px;
+    }
+
+    .agreement p {
+        line-height: 24px;
+    }
+/*分享弹出框*/
+.share {
+    display: none;
+}
+
+    .share .bg {
+        background: #000;
+        opacity: 0.4;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99;
+    }
+
+    .share .content {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        margin-left: -238px;
+        background: #fff;
+        z-index: 100;
+        width: 476px;
+        height: 330px;
+    }
+
+    .share h3 {
+        height: 36px;
+        background: #278ff2 url(/content/sharefile/logo_big.png) no-repeat 10px center;
+        -webkit-background-size: 30px 30px;
+        background-size: 30px 30px;
+        padding-left: 48px;
+        line-height: 36px;
+        color: #fff;
+        font-size: 14px;
+        position: relative;
+        margin-bottom: 40px;
+        overflow: hidden;
+    }
+
+        .share h3 .close {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            display: block;
+            height: 22px;
+            width: 22px;
+            background: url(/content/sharefile/close.png) no-repeat;
+            cursor: pointer;
+        }
+
+            .share h3 .close:hover {
+                background-image: url(/content/sharefile/close_hover.png);
+            }
+
+    .share .box {
+        padding-left: 40px;
+    }
+
+    .share p {
+        color: #333;
+    }
+
+    .share .my_link, .share .my_code span {
+        background: #eeeeee;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        color: #278ff2;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .share .my_link {
+        width: 391px;
+        padding-left: 10px;
+        margin-bottom: 21px;
+        border: 0 none;
+    }
+
+    .share .my_code span {
+        display: inline-block;
+        width: 65px;
+        text-align: center;
+    }
+
+    .share .my_btn {
+        text-align: right;
+        padding-right: 20px;
+        position: absolute;
+        bottom: 73px;
+        right: 0;
+    }
+
+        .share .my_btn span {
+            display: inline-block;
+            height: 38px;
+            border-radius: 3px;
+            text-align: center;
+            line-height: 38px;
+            color: #5b5b5b;
+            cursor: pointer;
+        }
+
+        .share .my_btn .copy {
+            background: url(/content/sharefile/copy_link.png);
+            width: 138px;
+            color: #fff;
+            margin-right: 16px;
+        }
+
+        .share .my_btn .guanbi {
+            width: 98px;
+            border: 1px solid #d2d2d2;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+    .share .notice {
+        position: absolute;
+        left: 16px;
+        bottom: 9px;
+        font-size: 12px;
+        color: #ff426a;
+    }
+
+.share1 .jiami {
+    font-size: 14px;
+    color: #7c7c7c;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 85px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+    .share1 .jiami span {
+        font-size: 16px;
+        color: #333;
+        /*margin-right: 30px;*/
+        position: absolute;
+        left: 0;
+        top: -2px;
+    }
+
+    .share1 .jiami i {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: url(/content/sharefile/check.png);
+        position: relative;
+        top: 3px;
+        margin-right: 7px;
+        cursor: pointer;
+    }
+
+    .share1 .jiami.current i {
+        background-image: url(/content/sharefile/checked.png);
+    }
+
+@media (max-width:520px ) {
+    .share .content {
+        width: 94%;
+        margin-left: 0;
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+        transform: translateX(-50%);
+    }
+
+    .share .box {
+        padding-left: 20px;
+    }
+
+    .share .my_link {
+        width: 90%;
+        height: auto;
+    }
+}
+
+/*填写个人资料*/
+.fill_form {
+    padding: 60px 0 0 173px;
+}
+
+    .fill_form p {
+        color: #333;
+        line-height: 40px;
+    }
+
+    .fill_form span {
+        display: block;
+        margin-bottom: 30px;
+        color: #949494;
+        font-size: 14px;
+        line-height: 30px;
+    }
+
+    .fill_form input {
+        width: 500px;
+        height: 46px;
+        border-color: #e5e5e5;
+        line-height:46px;
+    }
+
+    .fill_form .pasw_again span {
+        margin-bottom: 60px;
+    }
+
+    .fill_form .submit {
+        width: 318px;
+        height: 42px;
+        border-radius: 3px;
+        background: #1888f0;
+        margin-left: 60px;
+        text-align: center;
+        line-height: 42px;
+        color: #fff;
+    }
+
+    .fill_form div.imginput {
+        width: 500px;
+        height: 46px;
+    }
+
+        .fill_form div.imginput input.incode {
+            width: 400px;
+            height: 46px;
+            border-color: #e5e5e5;
+            float: left;
+            clear: none;
+        }
+
+        .fill_form div.imginput span.spimg {
+            width: 94px;
+            margin: 2px 0px;
+            height: 42px;
+            float: right;
+            clear: none;
+        }
+
+        .fill_form div.imginput span.spget {
+            width: 94px;
+            margin: 2px 0px;
+            height: 42px;
+            text-align: center;
+            line-height: 42px;
+            background-color: #ecf5ff;
+            display: block;
+            font-size: 16px;
+            color: #238ffe;
+            border: solid 1px #238ffe;
+            border-radius: 2px;
+            float: right;
+            clear: none;
+            cursor: pointer;
+        }
+
+@media (max-width:1439px) {
+    .fill_form {
+        padding-left: 50px;
+    }
+}
+
+@media (max-width:840px) {
+    .fill_form {
+        padding-left: 0;
+    }
+
+        .fill_form .name {
+            padding-left: 30px;
+        }
+
+        .fill_form .submit {
+            margin: 0 auto;
+        }
+
+        .fill_form input {
+            width: 90%;
+        }
+
+        .fill_form .submit {
+            width: 60%;
+        }
+
+        .fill_form div.imginput {
+            width: 90%;
+            height: 46px;
+        }
+
+            .fill_form div.imginput input.incode {
+                width: 50%;
+                height: 46px;
+                border-color: #e5e5e5;
+                float: left;
+                clear: none;
+            }
+
+            .fill_form div.imginput span.spimg {
+                width: 94px;
+                margin: 2px 0px;
+                height: 42px;
+                float: right;
+                clear: none;
+            }
+}
+
+/*文件列表为空*/
+.nofilelist {
+    background: url(/Content/filelist/no_file.png) no-repeat center 110px;
+    padding: 300px 0px 0px 0px;
+    height: 160px;
+    line-height: 20px;
+    text-align: center;
+    display:none;
+}
+
+    .nofilelist p {
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 18px;
+        color: #bbb;
+        margin: 0px 0px 15px 0px;
+        clear: both;
+    }
+
+    .nofilelist a {
+        text-decoration: underline;
+        font-size: 16px;
+        line-height: 30px;
+        margin: 0px 10px;
+    }
+
+/*填写个人资料*/
+.yonghuming {
+    padding: 45px 0 0 60px;
+}
+
+    .yonghuming .my_content {
+        background: url(/Content/member/yonghuming_bg.jpg) no-repeat center center;
+        width: 825px;
+        height: 499px;
+        padding: 114px 0 0 63px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+        .yonghuming .my_content .box {
+            width: 432px;
+            height: 326px;
+            background: url(/Content/member/yonghuming_box_bg.png) no-repeat center center;
+            padding: 34px 21px 0 99px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+            .yonghuming .my_content .box div {
+                height: 59px;
+                border-bottom: 1px solid #e5e5e5;
+                line-height: 60px;
+            }
+
+            .yonghuming .my_content .box .left {
+                color: #949494;
+            }
+
+                .yonghuming .my_content .box .left span {
+                    color: #000;
+                }
+
+/*取消分享弹出框*/
+.cancel_share {
+    /*display: block;*/
+}
+
+    .cancel_share .content {
+        width: 376px;
+        height: 200px;
+        margin-left: -188px;
+    }
+
+        .cancel_share .content .box {
+            padding-left: 0;
+        }
+
+        .cancel_share .content h3 {
+            margin-bottom: 0;
+        }
+
+        .cancel_share .content p {
+            height: 109px;
+            background: url(/Content/sharefile/quxiao_img.png) no-repeat 50px center;
+            line-height: 109px;
+            padding-left: 105px;
+            font-size: 14px;
+            color: #333;
+            margin: 0 auto;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .cancel_share .content .btn {
+            text-align: right;
+            padding-top: 10px;
+        }
+
+            .cancel_share .content .btn span {
+                display: inline-block;
+                width: 92px;
+                height: 34px;
+                margin-right: 20px;
+                cursor: pointer;
+            }
+
+                .cancel_share .content .btn span.queding {
+                    background: url(/Content/sharefile/queding1.png) no-repeat;
+                }
+
+                .cancel_share .content .btn span.quxiao {
+                    background: url(/Content/sharefile/quxiao1.png) no-repeat;
+                }
+
+                .cancel_share .content .btn span.queding:hover {
+                    background: url(/Content/sharefile/queding2.png) no-repeat;
+                }
+
+                .cancel_share .content .btn span.quxiao:hover {
+                    background: url(/Content/sharefile/quxiao2.png) no-repeat;
+                }
+
+/*复制链接及密码
+.copy_bar{
+    text-align: left;
+    border-right: 1px solid #e6e6e6;
+    padding:7px;
+    height:24px;
+    background:#ecf6ff;
+    position: relative;
+}
+.copy_bar a{
+    margin-right: 10px;
+}
+.copy_bar strong{
+    font-weight: 400;
+
+}
+.copy_bar .copy_btn{
+    display: inline-block;
+    width: 40px;
+    height: 24px !important;
+    text-align: center;
+    line-height: 24px;
+    color: #fff;
+    background: #5592e8;
+    border-radius: 3px;
+    position: absolute;
+    bottom:4px;
+    right: 5px;
+    margin-right: 0;
+    padding:0px;
+    cursor:pointer;
+}
+.my_file .table_file li.col-9 .copy_bar .delet_btn{
+    position: absolute;
+    right: 55px;
+    bottom:6px;
+    margin: 0;
+    cursor:pointer;
+}
+*/
+
+.copy_bar {
+    text-align: left;
+    border-right: 1px solid #e6e6e6;
+    /*border-top: 1px solid #e6e6e6;*/
+    min-height: 24px;
+    padding: 7px;
+    background: #ecf6ff;
+    position: relative;
+}
+
+    .copy_bar a {
+        margin-right: 10px;
+        position: relative;
+        top: 4px;
+    }
+
+    .copy_bar strong {
+        font-weight: 400;
+        width: 100%;
+        max-width: 280px;
+        overflow: hidden;
+        display: inline-block;
+        text-overflow: ellipsis;
+        position: relative;
+        padding-left: 32px;
+        height: 20px;
+        top:5px;
+        line-height:12px;
+    }
+
+        .copy_bar strong i {
+            position: absolute;
+            font-style: normal;
+            left: 0;
+            top: 4px;
+        }
+
+    .copy_bar .copy_btn {
+        display: inline-block;
+        width: 40px;
+        height: 24px !important;
+        text-align: center;
+        line-height: 24px;
+        color: #fff;
+        background: #5592e8;
+        border-radius: 3px;
+        position: absolute;
+        bottom: 5px;
+        right: 75px;
+        margin-right: 0;
+        cursor: pointer;
+    }
+
+.my_file .table_file li.col-9 .copy_bar .delet_btn {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    top: auto;
+    margin: 0;
+    height: 24px;
+    padding: 0 5px;
+    color: #fff;
+    line-height: 24px;
+    /*background: #e7e7e7;*/
+    background: #f5a82e;
+    border-radius: 3px;
+    cursor: pointer;
+    height: auto !important;
+    width: auto;
+    width:68px;
+    -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+}
+
+@media (max-width:1200px ) {
+    .copy_bar strong {
+        display: block;
+        margin-bottom:8px;
+    }
+}
+
+@media (max-width:1000px ) {
+    .copy_bar strong {
+        display: block;
+        width: 100%;
+        line-height: 20px;
+        margin-bottom: 5px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        top:-2px;
+    }
+}
+
+@media (max-width:380px ) {
+    .copy_bar {
+        padding-bottom: 35px;
+    }
+
+        .copy_bar > span {
+            display: block;
+        }
+
+        .copy_bar .copy_btn {
+            right: auto;
+            left: 5px;
+        }
+
+        .copy_bar .delet_btn {
+            right: auto;
+            left: 55px;
+        }
+}
+
+
+
+.toast_dialog {
+    width: 290px;
+    height: 40px;
+    line-height: 38px;
+    font-size: 14px;
+    border: 1px solid #f3e041;
+    border-radius: 3px;
+    padding-left: 35px;
+    background: #f9edbe url(/Content/sharefile/copy_success.png) no-repeat 10px center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -135px;
+    z-index: 9999;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: none;
+}
+
+    .toast_dialog.fail {
+        background: #f9edbe url(/Content/sharefile/copy_fail.png) no-repeat 10px center;
+    }
+
+    .toast_dialog.warn {
+        background: #f9edbe url(/Content/sharefile/copy_warn.png) no-repeat 10px center;
+    }
