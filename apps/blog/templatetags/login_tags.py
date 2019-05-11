@@ -1,7 +1,7 @@
 from django import template
 from django.db.models.aggregates import Count
-
-from ..models import Post, Category, Tag
+from django.contrib.auth.decorators import login_required
+from ..models import Post, Category, Tag ,Comment
 
 register = template.Library()
 
@@ -31,3 +31,9 @@ def get_tags():
 @register.simple_tag
 def get_posts():
     return Post.objects.all()
+
+
+@register.simple_tag
+def get_comments(Post):
+    return Post.comment_set.all().order_by('cloum')
+

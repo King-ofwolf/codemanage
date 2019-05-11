@@ -1,37 +1,24 @@
 {% extends 'worker/meBase.html' %}
 {% load static %}
 {% block title %}详情页|{{ post.title }}{% endblock %}
+{% block username %}{{ user.username }}{% endblock %}
 
+{% block extra_css %}
 
-{% block stylesheet %}
-
-    <script type="text/javascript" src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+<script type="text/javascript" src="{% static 'codemirror/lib/codemirror.js' %}"></script>
     <link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}">
     <link rel="stylesheet" href="{% static 'codemirror/theme/dracula.css' %}">
 
 
+    <script type="text/javascript" src="{% static 'codemirror/lib/codemirror.js' %}"></script>
     <script src="{% static 'codemirror/mode/javascript/javascript.js' %}"></script>
     <script src="{% static 'codemirror/mode/clike/clike.js' %}"></script>
     <script src="{% static 'codemirror/addon/mode/loadmode.js' %}"></script>
     <script src="{% static 'codemirror/mode/python/python.js' %}"></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Peralta" rel="stylesheet">
-    <script src="{% static 'blog/js/jquery-3.4.0.js' %}"></script>
-    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'blog/js/pace.min.js' %}"></script>
-    <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
-    <script src="{% static 'blog/js/script.js' %}"></script>
 
 
-
-{% endblock stylesheet %}
-
-{% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'blog:worker_home_page' %}">标注主页</a></li>
-  <li class="breadcrumb-item"><a href="{% url 'blog:detail' post.pk %}">{{ post.title }}</a></li>
-
-{% endblock %}
-
+{% endblock extra_css %}
 
 {% block main %}
     <article class="post post-{{ post.pk }}">
@@ -52,7 +39,7 @@
                          <span class="total">{{ total_likes }}</span>
                          like{{ total_likes|pluralize }}
                     </span>
-                    <a href="#" data-id="{{ post.pk }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like">
+                    <a href="#" data-id="{{ post.pk }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like button">
                       {% if request.user not in users_like %}
                         Like
                       {% else %}
@@ -80,7 +67,7 @@
       }
     });
     $(document).ready(function(){
-    $('a.like').click(function(e){
+  $('a.like').click(function(e){
     e.preventDefault();
     $.post('{% url "blog:like"  %}',
       {
@@ -143,6 +130,24 @@
                 // .. 还有好多，翻译不完。需要的去看http://codemirror.net/doc/manual.html#config
             });
             editor.setSize('auto', '600px'); //设置代码框的长宽
+           /*选择脚本类型JS
+            var txt1=$("#script_once_code").val();
+            var txt2='';
+            $(".ck-code").click(function(){
+                   var txt=editor.getValue(); //editor.getValue()获取textarea中的值
+                   var lang=$(this).prop("id");
+                   if(lang=="script_once_type1") {
+                           editor.setOption("mode","python");//editor.setOption()设置脚本类型
+                           editor.setValue(txt);// editor.setValue()设置textarea中的值
+                           editor.refresh();
+                   }
+                   else if(lang=="script_once_type2") {
+                           editor.setOption("mode","clike");
+                           editor.setValue(txt);
+                           editor.refresh();
+                   }
+                   $refs.myEditor.editor.setOption()
+            });*/
 
 
            function s_mode(){
@@ -156,6 +161,7 @@
           }
           function c_mode() {
               editor.setOption("mode","text/x-c++src");
+
           }
           function p_mode() {
               editor.setOption("mode","python");
@@ -198,15 +204,33 @@
     </section>
 
 {% endblock main %}
-{% block aside %}
+{% block toc %}
     <div class="widget widget-content">
-            <h3>标注列表，共 <span>{{ comment_list.count }}</span> 条标注</h3>
+            <h3>标注列表，共 <span>{{ post.comment_set.count }}</span> 条标注</h3>
             <ul class="comment-list list-unstyled">
-                {% for comment in comment_list.all %}
+                {% for comment in post.comment_set.all %}
                     <li class="comment-item">
                         <span class="nickname">{{ comment.user.username }}</span>
                         <time class="submit-date"
                               datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>
+
+                        {% with total_likes=comment.users_like.count  users_like=comment.users_like.all %}
+
+                            <span class="vote_count">
+                                <span class="vote_total">{{ total_likes }}</span>
+                                like{{ total_likes|pluralize }}
+                            </span>
+
+                            <a href="#" data-id="{{ comment.id }}" data-action="{% if request.user in users_like %}un{% endif %}vote"
+                               class="vote button"  >
+                                {% if request.user not in users_like %}
+                                    vote
+                                {% else %}
+                                    Unvote
+                                {% endif %}
+                            </a>
+                        {% endwith %}
+
                         <div class="cloum">
                             行数：{{ comment.cloum }}<button onclick="runinto({{ comment.cloum }})">跳转</button>
                         </div>
@@ -221,5 +245,43 @@
             </ul>
     </div>
 
-
-{% endblock aside %}
+    <script>
+    var csrftoken = Cookies.get('csrftoken');
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+    $(document).ready(function(){
+        $("a[class$="+name+"]")
+  $('a.vote').click(function(e){
+    e.preventDefault();
+    $.post('{% url "blog:comment_like"  %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok')
+        {
+          var previous_action = $('a.vote').data('action');
+          // toggle data-action
+          $('a.vote').data('action', previous_action == 'vote' ? 'unvote' : 'vote');
+          // toggle link text
+          $('a.vote').text(previous_action == 'vote' ? 'Unvote' : 'Vote');
+          // update total likes
+          var previous_likes = parseInt($('span.vote_count .vote_total').text());
+          $('span.vote_count .vote_total').text(previous_action == 'vote' ? previous_likes + 1 : previous_likes - 1);
+        }
+      }
+    );
+  });
+       });
+  </script>
+{% endblock toc %}

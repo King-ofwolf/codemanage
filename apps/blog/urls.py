@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^tag/(?P<pk>[0-9]+)/$', views.TagView.as_view(), name='tag'),
     url(r'^category/(?P<pk>[0-9]+)/$', views.CategoryView.as_view(), name='category'),
     url(r'^comment/post/(?P<post_pk>[0-9]+)/$', views.post_comment, name='post_comment'),
+    url(r'^search/$', views.search, name='search'),
   #  re_path(r'^post/like/$', views.article_like, name='article_like'),
     path('post/like/', views.article_like, name='like'),
     path('comment/like/', views.comment_like, name='comment_like'),

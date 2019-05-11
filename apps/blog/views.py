@@ -1,6 +1,6 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponseRedirect
-from .models import User,Post
+from .models import Post
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib import auth
@@ -12,15 +12,22 @@ from django.shortcuts import render_to_response
 from django.shortcuts import render,get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.text import slugify
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
+from .models import Board, com_top, Topic
 from .models import Comment, Tag
 from .forms import CommentForm
+from .forms import NewTopicForm, PostForm
 from django.http import JsonResponse
+from django.urls import reverse
 import csv,json,shutil,os,urllib
 from django.http import FileResponse
 from category.models import Category
-
+from django.utils import timezone
+from django.db.models import Count
+from django.utils.decorators import method_decorator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 
 #定义表单模型
 class UserForm(forms.Form):
@@ -395,6 +402,7 @@ def post_comment(request, post_pk):
 
 # 文章点赞功能
 @login_required
+@csrf_exempt
 @require_http_methods(["POST"])
 def article_like(request):
     post_id = request.POST.get('id')
@@ -431,30 +439,152 @@ def comment_like(request):
             pass
     return JsonResponse({'status': 'fail'})
 
-# 评论
-'''''@login_required(login_url=reverse_lazy('user_login'))
-def makecomment(request):
+#搜索功能
+def search(request):
+    q = request.GET.get('q')
+    error_msg = ''
+
+    if not q:
+        error_msg = "请输入关键词"
+        return render(request, 'worker/homepage.html', {'error_msg': error_msg})
+
+    post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'worker/homepage.html', {'error_msg': error_msg,
+                                               'post_list': post_list})
+
+
+###用户主页
+def Usercenter(request):
+    user = request.user
+    mycommentlist = Comment.objects.filter(user=user).order_by("-created_time")
+    mypostlike = user.post_set.all()
+    paginator = Paginator(mycommentlist, 4)
+    paginator_post = Paginator(mypostlike, 4)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+    page = request.GET.get('page')
+
+    try:
+        contacts1 = paginator_post.page(page)
+    except PageNotAnInteger:
+        contacts1 = paginator_post.page(1)
+    except EmptyPage:
+        contacts1 = paginator_post.page(paginator.num_pages)
+    context = {'mycodeslist':contacts, 'mypostlike':contacts1}
+    return render(request, 'worker/userCenter.html', context=context)
+
+
+class BoardListView(ListView):
+    model = Board
+    context_object_name = 'boards'
+    template_name = 'board/home.html'
+
+
+class TopicListView(ListView):
+    model = Topic
+    context_object_name = 'topics'
+    template_name = 'board/topics.html'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        kwargs['board'] = self.board
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        self.board = get_object_or_404(Board, pk=self.kwargs.get('pk'))
+        queryset = self.board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+        return queryset
+
+
+class Com_topListView(ListView):
+    model = com_top
+    context_object_name = 'posts'
+    template_name = 'board/topic_posts.html'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        session_key = 'viewed_topic_{}'.format(self.topic.pk)
+        if not self.request.session.get(session_key, False):
+            self.topic.views += 1
+            self.topic.save()
+            self.request.session[session_key] = True
+        kwargs['topic'] = self.topic
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        self.topic = get_object_or_404(Topic, board__pk=self.kwargs.get('pk'), pk=self.kwargs.get('topic_pk'))
+        queryset = self.topic.posts.order_by('created_at')
+        return queryset
+
+
+@login_required
+def new_topic(request, pk):
+    board = get_object_or_404(Board, pk=pk)
     if request.method == 'POST':
-        comment = request.POST.get("comment", "")
-        post_id = request.POST.get("post_id", "")
-        comment_id = request.POST.get("comment_id", "")
+        form = NewTopicForm(request.POST)
+        if form.is_valid():
+            topic = form.save(commit=False)
+            topic.board = board
+            topic.starter = request.user
+            topic.save()
+            com_top.objects.create(
+                message=form.cleaned_data.get('message'),
+                topic=topic,
+                created_by=request.user
+            )
+            return redirect('topic_posts', pk=pk, topic_pk=topic.pk)
+    else:
+        form = NewTopicForm()
+    return render(request, 'board/new_topic.html', {'board': board, 'form': form})
 
-        user = LoginUser.objects.get(username=request.user)
-        p = Post.objects.get(pk=post_id)
-        p.responce_times += 1
-        p.last_response = user
 
-        if comment_id:
-            p_comment = Comment.objects.get(pk=comment_id)
-            c = Comment(post=p, author=user, comment_parent=p_comment, content=comment)
-            c.save()
-        else:
-            c = Comment(post=p, author=user, content=comment)
-            c.save()
-        p.save()
-       # user.levels += 3  # 评论一次积分加 3
-        user.save()
+@login_required
+def reply_topic(request, pk, topic_pk):
+    topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.topic = topic
+            post.created_by = request.user
+            post.save()
 
-    return HttpResponse("评论成功")
+            topic.last_updated = timezone.now()
+            topic.save()
 
-'''''
+            topic_url = reverse('topic_posts', kwargs={'pk': pk, 'topic_pk': topic_pk})
+            topic_post_url = '{url}?page={page}#{id}'.format(
+                url=topic_url,
+                id=post.pk,
+                page=topic.get_page_count()
+            )
+
+            return redirect(topic_post_url)
+    else:
+        form = PostForm()
+    return render(request, 'board/reply_topic.html', {'topic': topic, 'form': form})
+
+
+@method_decorator(login_required, name='dispatch')
+class PostUpdateView(UpdateView):
+    model = com_top
+    fields = ('message', )
+    template_name = 'board/edit_post.html'
+    pk_url_kwarg = 'post_pk'
+    context_object_name = 'post'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(created_by=self.request.user)
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.updated_by = self.request.user
+        post.updated_at = timezone.now()
+        post.save()
+        return redirect('topic_posts', pk=post.topic.board.pk, topic_pk=post.topic.pk)

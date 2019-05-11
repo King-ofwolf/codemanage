@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os,sys
-
+from decouple import config, Csv
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
@@ -23,10 +23,10 @@ sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
 SECRET_KEY = '6dujujeed5ix+!0q3q!qa#rk&tb^4+bad0t$xyq=y+d)#iuvly'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 #ALLOWED_HOSTS = ['127.0.0.1']
-STATIC_ROOT=os.path.join(BASE_DIR,'static/')
+STATIC_ROOT=os.path.join(BASE_DIR,'/static/')
 ALLOWED_HOSTS = ['39.96.66.226']
 
 
@@ -127,7 +127,14 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/blog'
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -140,3 +147,4 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = 'users.User'
 SITE_ID = 1
+
