@@ -26,7 +26,7 @@ SECRET_KEY = '6dujujeed5ix+!0q3q!qa#rk&tb^4+bad0t$xyq=y+d)#iuvly'
 DEBUG = False
 
 #ALLOWED_HOSTS = ['127.0.0.1']
-STATIC_ROOT=os.path.join(BASE_DIR,'static/')
+STATIC_ROOT=os.path.join(BASE_DIR,'/static/')
 ALLOWED_HOSTS = ['39.96.66.226']
 
 
