@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from datetime import  *
 from article.models import Article
 
+
 def index(request):
     now = datetime.now()
     #print(request.session['user'])

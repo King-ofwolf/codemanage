@@ -1,9 +1,11 @@
-
+import math
 from django.db import models
 from django.contrib import admin
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-
+from markdown import markdown
+from django.utils.html import mark_safe
+from django.utils.text import Truncator
 from django.contrib.contenttypes.models import ContentType
 from django import forms
 from django.utils.html import strip_tags
@@ -12,6 +14,8 @@ from django.urls import reverse
 from django.db.models import signals
 from category.models import Category
 import datetime
+
+
 class Tag(models.Model):
     """
     标签 Tag 也比较简单，和 Category 一样。
@@ -91,7 +95,73 @@ class Comment(models.Model):
         return self.text[:20]
 
 
+#论坛板块
+class Board(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    description = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
+    def get_posts_count(self):
+        return com_top.objects.filter(topic__board=self).count()
+
+    def get_last_post(self):
+        return com_top.objects.filter(topic__board=self).order_by('-created_at').first()
+
+
+#主题
+class Topic(models.Model):
+    subject = models.CharField(max_length=255)
+    last_updated = models.DateTimeField(auto_now_add=True)
+    board = models.ForeignKey(Board, related_name='topics', on_delete=models.CASCADE)
+    starter = models.ForeignKey(User, related_name='topics', on_delete=models.CASCADE)
+    views = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.subject
+
+    def get_page_count(self):
+        count = self.posts.count()
+        pages = count / 20
+        return math.ceil(pages)
+
+    def has_many_pages(self, count=None):
+        if count is None:
+            count = self.get_page_count()
+        return count > 6
+
+    def get_page_range(self):
+        count = self.get_page_count()
+        if self.has_many_pages(count):
+            return range(1, 5)
+        return range(1, count + 1)
+
+    def get_last_ten_posts(self):
+        return self.posts.order_by('-created_at')[:10]
+
+
+#回复
+class com_top(models.Model):
+    message = models.TextField(max_length=4000)
+    topic = models.ForeignKey(Topic, related_name='posts', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(null=True)
+    created_by = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
+    updated_by = models.ForeignKey(User, null=True, related_name='+', on_delete=models.CASCADE)
+
+    def __str__(self):
+        truncated_message = Truncator(self.message)
+        return truncated_message.chars(30)
+
+    def get_message_as_markdown(self):
+        return mark_safe(markdown(self.message, safe_mode='escape'))
+
+
+admin.site.register(Board)
+admin.site.register(Topic)
+admin.site.register(com_top)
+admin.site.register(Post)
 admin.site.register(Tag)
 admin.site.register(Comment)
 

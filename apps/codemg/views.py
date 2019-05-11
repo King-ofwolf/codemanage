@@ -254,6 +254,7 @@ def code_create(request):
             post.title = request.POST['title']
             post.author = User.objects.get_by_natural_key(request.session['username'])
             post.category_id =  request.POST['category']
+            post.excerpt = request.POST['body']
             post.save()
             request.session['codeid'] = code.id
             return HttpResponseRedirect(reverse('codemg:code_post_list'))
