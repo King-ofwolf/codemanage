@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls import url, include
+from blog import  views
 from django.conf.urls.static import static
 from . import settings
 
@@ -22,8 +24,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/',include('main.urls',namespace='main')),
     path('',include('users.urls')),
+    path('users/', include('django.contrib.auth.urls')),
     path('article/',include('article.urls',namespace='article')),
     path('codemg/',include('codemg.urls',namespace='codemg')),
     path('category/',include('category.urls',namespace='category')),
     path('blog/', include('blog.urls')),
+
 ]
